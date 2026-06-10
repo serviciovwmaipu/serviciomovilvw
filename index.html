@@ -19,11 +19,17 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--gray-800);min-height:100vh;}
-header{background:var(--navy);padding:0 24px;display:flex;align-items:center;height:60px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-md);}
+header{background:var(--navy);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-md);}
 .logo{display:flex;align-items:center;gap:10px;}
 .logo-icon{width:34px;height:34px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
 .logo-text{color:var(--white);font-weight:700;font-size:15px;}
 .logo-sub{color:var(--gray-400);font-size:11px;}
+.sync-status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray-400);}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--gray-400);transition:background 0.3s;}
+.sync-dot.ok{background:#22c55e;}
+.sync-dot.loading{background:var(--orange);animation:pulse 1s infinite;}
+.sync-dot.error{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 .tab-bar{background:var(--navy-light);display:flex;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.06);overflow-x:auto;}
 .tab-btn{padding:14px 16px;color:var(--gray-400);font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:6px;}
 .tab-btn:hover{color:var(--white);}
@@ -33,13 +39,11 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
 .section-title{font-size:18px;font-weight:700;color:var(--navy);letter-spacing:-0.4px;}
 .section-sub{font-size:12px;color:var(--gray-400);margin-top:2px;}
-/* STATS */
 .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 @media(max-width:600px){.stats-bar{grid-template-columns:1fr 1fr;}}
 .stat-card{background:var(--white);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow-sm);border:1px solid var(--gray-200);}
 .stat-value{font-size:26px;font-weight:800;color:var(--navy);line-height:1;}
 .stat-label{font-size:11px;color:var(--gray-400);margin-top:4px;font-weight:500;}
-/* CALENDAR */
 .month-nav{display:flex;align-items:center;gap:14px;}
 .month-nav-btn{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background 0.15s;}
 .month-nav-btn:hover{background:var(--orange);color:white;border-color:var(--orange);}
@@ -57,8 +61,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .cal-locality-select:focus{border-color:var(--orange);}
 .cal-locality-select.assigned{background:var(--orange-glow);border-color:var(--orange);color:var(--orange-dark);font-weight:600;}
 .cal-turno-pill{background:var(--navy);color:white;font-size:9.5px;padding:2px 5px;border-radius:4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;display:block;}
-.cal-more{font-size:10px;color:var(--orange);font-weight:600;cursor:pointer;}
-/* BUTTONS */
+.cal-more{font-size:10px;color:var(--orange);font-weight:600;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--radius);font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:all 0.18s;}
 .btn-primary{background:var(--orange);color:var(--white);}
 .btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px var(--orange-glow);}
@@ -67,9 +70,6 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .btn-danger:hover{background:var(--red);color:var(--white);}
 .btn-cancel{background:var(--gray-100);color:var(--gray-600);border:none;}
 .btn-cancel:hover{background:var(--gray-200);}
-.btn-secondary{background:var(--gray-100);color:var(--navy);border:1px solid var(--gray-200);}
-.btn-secondary:hover{background:var(--gray-200);}
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,0.55);z-index:200;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:var(--radius-lg);padding:28px;width:100%;max-width:560px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto;}
@@ -82,12 +82,10 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .form-group input:focus,.form-group select:focus{border-color:var(--orange);}
 .modal-actions{display:flex;gap:10px;margin-top:22px;justify-content:flex-end;}
 .hint{font-size:11px;color:var(--gray-400);margin-top:3px;}
-/* FILTER BAR */
 .filter-bar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;}
 .filter-bar select,.filter-bar input{padding:8px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;background:var(--white);color:var(--gray-800);outline:none;}
 .filter-bar select:focus,.filter-bar input:focus{border-color:var(--orange);}
 .search-input{flex:1;min-width:180px;}
-/* TABLE */
 .table-wrap{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border:1px solid var(--gray-200);overflow:hidden;overflow-x:auto;}
 .turnos-table{width:100%;border-collapse:collapse;font-size:13px;}
 .turnos-table thead{background:var(--navy);}
@@ -102,7 +100,6 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .empty-state{text-align:center;padding:48px 24px;color:var(--gray-400);}
 .empty-icon{font-size:40px;margin-bottom:12px;}
 .empty-title{font-size:15px;font-weight:600;color:var(--gray-600);margin-bottom:6px;}
-/* CLIENT HISTORY */
 .client-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-sm);cursor:pointer;transition:box-shadow 0.15s;}
 .client-card:hover{box-shadow:var(--shadow-md);}
 .client-name{font-weight:700;font-size:14px;color:var(--navy);}
@@ -118,7 +115,6 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .history-date{font-size:11px;color:var(--gray-400);font-weight:600;}
 .history-service{font-size:13px;font-weight:600;color:var(--navy);margin-top:2px;}
 .history-locality{font-size:11px;color:var(--orange-dark);margin-top:2px;}
-/* MAP */
 .map-controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
 #map-search{flex:1;min-width:220px;padding:9px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius);font-size:13px;font-family:'Inter',sans-serif;outline:none;background:var(--white);}
 #map-search:focus{border-color:var(--orange);}
@@ -142,6 +138,11 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 .nearby-chip{background:var(--navy);color:var(--white);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
 .blocked-chip{background:#fee2e2;color:var(--red);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
 .search-wrap{position:relative;flex:1;min-width:220px;}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,0.35);z-index:500;align-items:center;justify-content:center;}
+.loading-overlay.show{display:flex;}
+.loading-box{background:var(--white);border-radius:var(--radius-lg);padding:28px 36px;box-shadow:var(--shadow-lg);text-align:center;}
+.loading-spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 @media(max-width:700px){
   header{padding:0 14px;}
   .panel{padding:16px 14px;}
@@ -154,6 +155,13 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 </head>
 <body>
 
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div style="font-size:14px;font-weight:600;color:var(--navy)">Conectando...</div>
+  </div>
+</div>
+
 <header>
   <div class="logo">
     <div class="logo-icon">🔧</div>
@@ -162,27 +170,31 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
       <div class="logo-sub">Gestión de Turnos — Córdoba</div>
     </div>
   </div>
+  <div class="sync-status">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-label">Conectando…</span>
+  </div>
 </header>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('agenda')" id="tab-agenda">📅 Agenda</button>
-  <button class="tab-btn" onclick="switchTab('turnos')" id="tab-turnos">🛠 Turnos</button>
-  <button class="tab-btn" onclick="switchTab('clientes')" id="tab-clientes">👤 Clientes</button>
-  <button class="tab-btn" onclick="switchTab('mapa')" id="tab-mapa">🗺 Mapa</button>
+  <button class="tab-btn active" onclick="switchTab('agenda')"  id="tab-agenda">📅 Agenda</button>
+  <button class="tab-btn"        onclick="switchTab('turnos')"  id="tab-turnos">🛠 Turnos</button>
+  <button class="tab-btn"        onclick="switchTab('clientes')" id="tab-clientes">👤 Clientes</button>
+  <button class="tab-btn"        onclick="switchTab('mapa')"    id="tab-mapa">🗺 Mapa</button>
 </div>
 
-<!-- ══════════ AGENDA ══════════ -->
+<!-- AGENDA -->
 <div id="panel-agenda" class="panel active">
   <div class="stats-bar">
-    <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Turnos este mes</div></div>
-    <div class="stat-card"><div class="stat-value" id="stat-dias">0</div><div class="stat-label">Días con visitas</div></div>
-    <div class="stat-card"><div class="stat-value" id="stat-localidades">0</div><div class="stat-label">Localidades activas</div></div>
-    <div class="stat-card"><div class="stat-value" id="stat-pendientes">0</div><div class="stat-label">Sin asignar</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-total">—</div><div class="stat-label">Turnos este mes</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-dias">—</div><div class="stat-label">Días con visitas</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-localidades">—</div><div class="stat-label">Localidades activas</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-pendientes">—</div><div class="stat-label">Sin asignar</div></div>
   </div>
   <div class="section-header">
     <div>
       <div class="section-title">Agenda Mensual</div>
-      <div class="section-sub">Asigná localidad a cada día hábil — los turnos se alimentan desde la pestaña Turnos</div>
+      <div class="section-sub">Asigná localidad a cada día hábil — cambios se sincronizan en tiempo real</div>
     </div>
     <div class="month-nav">
       <button class="month-nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -201,7 +213,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<!-- ══════════ TURNOS ══════════ -->
+<!-- TURNOS -->
 <div id="panel-turnos" class="panel">
   <div class="section-header">
     <div>
@@ -212,18 +224,12 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
   <div class="filter-bar">
     <input type="text" class="search-input" id="search-input" placeholder="🔍  Buscar cliente, patente, VIN..." oninput="renderTurnos()">
-    <select id="filter-localidad" onchange="renderTurnos()">
-      <option value="">Todas las localidades</option>
-    </select>
-    <select id="filter-fecha" onchange="renderTurnos()">
-      <option value="">Todas las fechas</option>
-    </select>
+    <select id="filter-localidad" onchange="renderTurnos()"><option value="">Todas las localidades</option></select>
+    <select id="filter-fecha"     onchange="renderTurnos()"><option value="">Todas las fechas</option></select>
   </div>
   <div class="table-wrap">
     <table class="turnos-table">
-      <thead>
-        <tr><th>#</th><th>Cliente</th><th>Modelo</th><th>Patente</th><th>VIN</th><th>Servicio</th><th>Localidad</th><th>Fecha</th><th></th></tr>
-      </thead>
+      <thead><tr><th>#</th><th>Cliente</th><th>Modelo</th><th>Patente</th><th>VIN</th><th>Servicio</th><th>Localidad</th><th>Fecha</th><th></th></tr></thead>
       <tbody id="turnos-tbody"></tbody>
     </table>
     <div id="turnos-empty" class="empty-state" style="display:none">
@@ -234,12 +240,12 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<!-- ══════════ CLIENTES ══════════ -->
+<!-- CLIENTES -->
 <div id="panel-clientes" class="panel">
   <div class="section-header">
     <div>
       <div class="section-title">Base de Clientes</div>
-      <div class="section-sub">Historial completo por cliente con todos sus vehículos y servicios</div>
+      <div class="section-sub">Historial completo por cliente con todos sus servicios</div>
     </div>
   </div>
   <div class="filter-bar">
@@ -253,7 +259,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<!-- ══════════ MAPA ══════════ -->
+<!-- MAPA -->
 <div id="panel-mapa" class="panel">
   <div class="section-header">
     <div>
@@ -280,18 +286,18 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
   <div class="info-card" id="map-info-card">
     <div class="legend-title" style="margin-bottom:6px">Información de zona</div>
-    <p style="font-size:13px;color:var(--gray-400)">Hacé click en un punto del mapa o usá el buscador para ver información de la zona.</p>
+    <p style="font-size:13px;color:var(--gray-400)">Hacé click en un punto del mapa o usá el buscador para ver información.</p>
   </div>
 </div>
 
-<!-- ══════════ MODAL TURNO ══════════ -->
+<!-- MODAL TURNO -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title">🛠 <span id="modal-title-text">Nuevo Turno</span></div>
     <div class="form-grid">
       <div class="form-group full">
         <label>Nombre del cliente</label>
-        <input type="text" id="f-nombre" placeholder="Ej: Juan Pérez" oninput="autoCompleteCliente()">
+        <input type="text" id="f-nombre" placeholder="Ej: Juan Pérez" oninput="autoCompleteCliente()" autocomplete="off">
         <div id="cliente-suggestions" style="position:relative"></div>
       </div>
       <div class="form-group"><label>Modelo del vehículo</label><input type="text" id="f-modelo" placeholder="Ej: Ford Focus 2020"></div>
@@ -300,16 +306,12 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
       <div class="form-group full"><label>Servicio a realizar</label><input type="text" id="f-servicio" placeholder="Ej: Service 10.000 km, cambio de aceite..."></div>
       <div class="form-group">
         <label>Fecha programada en Agenda</label>
-        <select id="f-fecha">
-          <option value="">— Seleccioná fecha —</option>
-        </select>
+        <select id="f-fecha"><option value="">— Seleccioná fecha —</option></select>
         <div class="hint" id="f-fecha-hint"></div>
       </div>
       <div class="form-group">
         <label>Localidad</label>
-        <select id="f-localidad" disabled>
-          <option value="">— Se llena al elegir fecha —</option>
-        </select>
+        <select id="f-localidad" disabled><option value="">— Se llena al elegir fecha —</option></select>
       </div>
     </div>
     <div class="modal-actions">
@@ -319,7 +321,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<!-- ══════════ MODAL CLIENTE DETAIL ══════════ -->
+<!-- MODAL CLIENTE -->
 <div class="client-detail-overlay" id="client-detail-overlay">
   <div class="client-detail">
     <div class="cd-header">
@@ -334,51 +336,134 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;hei
 </div>
 
 <script>
-// ════════ DATA ════════
-let turnos    = JSON.parse(localStorage.getItem('turnos_v3')    || '[]');
-let agendaDays = JSON.parse(localStorage.getItem('agendaDays_v3') || '{}');
-// clientes is derived from turnos — no separate store needed
-let editingId = null;
+// ══════════════════════════════════════════
+//  SUPABASE CONFIG
+// ══════════════════════════════════════════
+const SB_URL = 'https://ewlypegstwrwnjhlltqj.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bHlwZWdzdHdyd25qaGxsdHFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNDk4MDMsImV4cCI6MjA5NjYyNTgwM30.uwjZVRgT7uM6a_2VG2tklXX7ULvZrvqDs_s7bG7THD0';
+
+async function sbFetch(path, options = {}) {
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    headers: {
+      'apikey': SB_KEY,
+      'Authorization': `Bearer ${SB_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || 'return=representation',
+      ...options.headers
+    },
+    ...options
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
+}
+
+// CRUD helpers
+const db = {
+  async getTurnos()  { return sbFetch('turnos?order=fecha.asc'); },
+  async getAgenda()  { return sbFetch('agenda_days?order=fecha_key.asc'); },
+
+  async upsertTurno(t) {
+    return sbFetch('turnos', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates,return=representation',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(t)
+    });
+  },
+  async deleteTurno(id) {
+    return sbFetch(`turnos?id=eq.${id}`, { method: 'DELETE', prefer: '' });
+  },
+  async upsertAgenda(fecha_key, localidad) {
+    return sbFetch('agenda_days', {
+      method: 'POST',
+      prefer: 'resolution=merge-duplicates,return=representation',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify({ fecha_key, localidad })
+    });
+  },
+  async deleteAgenda(fecha_key) {
+    return sbFetch(`agenda_days?fecha_key=eq.${fecha_key}`, { method: 'DELETE', prefer: '' });
+  }
+};
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let turnos     = [];
+let agendaDays = {}; // { 'YYYY-MM-DD': 'Localidad' }
+let editingId  = null;
 let currentYear  = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 
 const LOCALIDADES = ['Córdoba Capital','Canals','Despeñaderos','Coronel Moldes','La Carlota','Villa Dolores','Tránsito','Jesús María','San Guillermo'];
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-function save() {
-  localStorage.setItem('turnos_v3',    JSON.stringify(turnos));
-  localStorage.setItem('agendaDays_v3', JSON.stringify(agendaDays));
+function setSyncStatus(state, label) {
+  const dot = document.getElementById('sync-dot');
+  dot.className = 'sync-dot ' + state;
+  document.getElementById('sync-label').textContent = label;
 }
 
-// ════════ TABS ════════
+function showLoading(v) {
+  document.getElementById('loading-overlay').classList.toggle('show', v);
+}
+
+// ══════════════════════════════════════════
+//  INIT — load all data
+// ══════════════════════════════════════════
+async function loadAll() {
+  showLoading(true);
+  setSyncStatus('loading', 'Cargando…');
+  try {
+    const [tData, aData] = await Promise.all([db.getTurnos(), db.getAgenda()]);
+    turnos = tData;
+    agendaDays = {};
+    aData.forEach(r => { agendaDays[r.fecha_key] = r.localidad; });
+    setSyncStatus('ok', 'Sincronizado');
+  } catch(e) {
+    setSyncStatus('error', 'Error de conexión');
+    console.error(e);
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ══════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════
 function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   document.getElementById('tab-'   + tab).classList.add('active');
-  if (tab === 'mapa'     && !window._mapInit) initMap();
+  if (tab === 'mapa'    && !window._mapInit) initMap();
   if (tab === 'agenda'  ) renderCalendar();
   if (tab === 'turnos'  ) { buildTurnoFilters(); renderTurnos(); }
   if (tab === 'clientes') renderClientes();
 }
 
-// ════════ HELPERS ════════
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
 function dateKey(y, m, d) {
   return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 }
-function fmtDate(key) {
-  if (!key) return '—';
-  const [y,m,d] = key.split('-');
+function fmtDate(k) {
+  if (!k) return '—';
+  const [y,m,d] = k.split('-');
   return `${d}/${m}/${y}`;
 }
-// Returns all agenda entries that have a locality assigned, sorted
 function getScheduledDates() {
-  return Object.entries(agendaDays)
-    .filter(([k,v]) => v)
-    .sort(([a],[b]) => a.localeCompare(b));
+  return Object.entries(agendaDays).filter(([,v])=>v).sort(([a],[b])=>a.localeCompare(b));
 }
 
-// ════════ CALENDAR ════════
+// ══════════════════════════════════════════
+//  CALENDAR
+// ══════════════════════════════════════════
 function changeMonth(dir) {
   currentMonth += dir;
   if (currentMonth > 11) { currentMonth = 0; currentYear++; }
@@ -397,48 +482,56 @@ function renderCalendar() {
   let totalTurnos=0, diasConVisita=0, sinAsignar=0;
   const locSet = new Set();
 
-  // blanks
   for (let i = 0; i < firstDay; i++) {
-    const b = document.createElement('div');
-    b.className = 'cal-cell empty';
-    grid.appendChild(b);
+    const b = document.createElement('div'); b.className='cal-cell empty'; grid.appendChild(b);
   }
 
   for (let d = 1; d <= daysInMon; d++) {
     const dow = (firstDay + d - 1) % 7;
-    const isWeekend = dow === 0 || dow === 6;
+    const isWeekend = dow===0 || dow===6;
     const key = dateKey(currentYear, currentMonth, d);
     const isToday = today.getFullYear()===currentYear && today.getMonth()===currentMonth && today.getDate()===d;
     const localidadAsignada = agendaDays[key] || '';
-    const turnosDia = turnos.filter(t => t.fecha === key);
+    const turnosDia = turnos.filter(t => t.fecha===key);
 
     if (!isWeekend) {
       totalTurnos += turnosDia.length;
-      if (turnosDia.length > 0) diasConVisita++;
+      if (turnosDia.length>0) diasConVisita++;
       turnosDia.forEach(t => { if(t.localidad) locSet.add(t.localidad); });
-      if (turnosDia.length > 0 && !localidadAsignada) sinAsignar += turnosDia.length;
+      if (turnosDia.length>0 && !localidadAsignada) sinAsignar += turnosDia.length;
     }
 
     const cell = document.createElement('div');
-    cell.className = 'cal-cell' + (isWeekend?' weekend':'') + (isToday?' today':'');
-
+    cell.className = 'cal-cell'+(isWeekend?' weekend':'')+(isToday?' today':'');
     const numEl = document.createElement('div');
     numEl.className = 'cal-day-num';
     numEl.textContent = d;
     cell.appendChild(numEl);
 
     if (!isWeekend) {
-      const opts = LOCALIDADES.map(l =>
-        `<option value="${l}" ${localidadAsignada===l?'selected':''}>${l}</option>`
-      ).join('');
+      const opts = LOCALIDADES.map(l=>`<option value="${l}" ${localidadAsignada===l?'selected':''}>${l}</option>`).join('');
       const sel = document.createElement('select');
-      sel.className = 'cal-locality-select' + (localidadAsignada?' assigned':'');
+      sel.className = 'cal-locality-select'+(localidadAsignada?' assigned':'');
       sel.innerHTML = `<option value="">— Localidad —</option>${opts}`;
-      sel.addEventListener('change', function() {
-        agendaDays[key] = this.value;
-        this.className  = 'cal-locality-select' + (this.value?' assigned':'');
-        save();
-        updateCalStats(totalTurnos, diasConVisita, locSet, sinAsignar);
+      sel.addEventListener('change', async function() {
+        const val = this.value;
+        this.className = 'cal-locality-select'+(val?' assigned':'');
+        setSyncStatus('loading','Guardando…');
+        try {
+          if (val) {
+            await db.upsertAgenda(key, val);
+            agendaDays[key] = val;
+          } else {
+            await db.deleteAgenda(key);
+            delete agendaDays[key];
+          }
+          setSyncStatus('ok','Sincronizado');
+          renderCalendar();
+          buildTurnoFilters();
+        } catch(e) {
+          setSyncStatus('error','Error al guardar');
+          console.error(e);
+        }
       });
       cell.appendChild(sel);
 
@@ -449,58 +542,52 @@ function renderCalendar() {
         pill.textContent = t.nombre;
         cell.appendChild(pill);
       });
-      if (turnosDia.length > 2) {
+      if (turnosDia.length>2) {
         const more = document.createElement('div');
-        more.className = 'cal-more';
-        more.textContent = `+${turnosDia.length-2} más`;
+        more.className='cal-more';
+        more.textContent=`+${turnosDia.length-2} más`;
         cell.appendChild(more);
       }
     }
     grid.appendChild(cell);
   }
 
-  // trailing blanks
   const total = firstDay + daysInMon;
   const rem   = total % 7;
-  if (rem !== 0) for (let i = 0; i < 7-rem; i++) {
-    const b = document.createElement('div'); b.className = 'cal-cell empty'; grid.appendChild(b);
+  if (rem!==0) for (let i=0;i<7-rem;i++) {
+    const b=document.createElement('div'); b.className='cal-cell empty'; grid.appendChild(b);
   }
 
-  updateCalStats(totalTurnos, diasConVisita, locSet, sinAsignar);
+  document.getElementById('stat-total').textContent       = totalTurnos;
+  document.getElementById('stat-dias').textContent        = diasConVisita;
+  document.getElementById('stat-localidades').textContent = locSet.size;
+  document.getElementById('stat-pendientes').textContent  = sinAsignar;
 }
 
-function updateCalStats(tot, dias, locSet, sin) {
-  document.getElementById('stat-total').textContent      = tot;
-  document.getElementById('stat-dias').textContent       = dias;
-  document.getElementById('stat-localidades').textContent= locSet.size;
-  document.getElementById('stat-pendientes').textContent = sin;
-}
-
-// ════════ TURNOS ════════
-// Build date/locality filters from agenda
+// ══════════════════════════════════════════
+//  TURNOS
+// ══════════════════════════════════════════
 function buildTurnoFilters() {
   const scheduled = getScheduledDates();
   const fechaSel  = document.getElementById('filter-fecha');
   const locSel    = document.getElementById('filter-localidad');
-  const prev = fechaSel.value;
+  const prevF = fechaSel.value, prevL = locSel.value;
 
   fechaSel.innerHTML = '<option value="">Todas las fechas</option>';
   const locSet = new Set();
   scheduled.forEach(([k,v]) => {
     const opt = document.createElement('option');
-    opt.value = k;
-    opt.textContent = `${fmtDate(k)} — ${v}`;
+    opt.value=k; opt.textContent=`${fmtDate(k)} — ${v}`;
     fechaSel.appendChild(opt);
     locSet.add(v);
   });
-  if (prev) fechaSel.value = prev;
+  if (prevF) fechaSel.value = prevF;
 
   locSel.innerHTML = '<option value="">Todas las localidades</option>';
   locSet.forEach(l => {
-    const opt = document.createElement('option');
-    opt.value = l; opt.textContent = l;
-    locSel.appendChild(opt);
+    const opt=document.createElement('option'); opt.value=l; opt.textContent=l; locSel.appendChild(opt);
   });
+  if (prevL) locSel.value = prevL;
 }
 
 function renderTurnos() {
@@ -511,17 +598,17 @@ function renderTurnos() {
   const filterFec= document.getElementById('filter-fecha').value;
 
   const filtered = turnos.filter(t => {
-    const matchQ   = !q || [t.nombre,t.patente,t.vin,t.modelo].some(v=>(v||'').toLowerCase().includes(q));
-    const matchLoc = !filterLoc || t.localidad === filterLoc;
-    const matchFec = !filterFec || t.fecha === filterFec;
-    return matchQ && matchLoc && matchFec;
-  }).sort((a,b) => (a.fecha||'').localeCompare(b.fecha||''));
+    const matchQ  = !q || [t.nombre,t.patente,t.vin,t.modelo].some(v=>(v||'').toLowerCase().includes(q));
+    const matchL  = !filterLoc || t.localidad===filterLoc;
+    const matchF  = !filterFec || t.fecha===filterFec;
+    return matchQ && matchL && matchF;
+  }).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
 
-  tbody.innerHTML = '';
-  empty.style.display = filtered.length===0 ? 'block' : 'none';
+  tbody.innerHTML='';
+  empty.style.display = filtered.length===0 ? 'block':'none';
   filtered.forEach((t,i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `
+    tr.innerHTML=`
       <td style="color:var(--gray-400);font-size:12px">${i+1}</td>
       <td style="font-weight:600">${t.nombre}</td>
       <td>${t.modelo}</td>
@@ -540,69 +627,56 @@ function renderTurnos() {
   });
 }
 
-// ════════ MODAL TURNO ════════
 function openModal(id) {
-  editingId = id || null;
-  const t = id ? turnos.find(x => x.id===id) : null;
-  document.getElementById('modal-title-text').textContent = t ? 'Editar Turno' : 'Nuevo Turno';
-  document.getElementById('f-nombre').value  = t?.nombre  || '';
-  document.getElementById('f-modelo').value  = t?.modelo  || '';
-  document.getElementById('f-patente').value = t?.patente || '';
-  document.getElementById('f-vin').value     = t?.vin     || '';
-  document.getElementById('f-servicio').value= t?.servicio|| '';
-
-  // Build fecha options from agenda
-  buildFechaOptions(t?.fecha || '', t?.localidad || '');
+  editingId = id||null;
+  const t = id ? turnos.find(x=>x.id===id) : null;
+  document.getElementById('modal-title-text').textContent = t?'Editar Turno':'Nuevo Turno';
+  document.getElementById('f-nombre').value  = t?.nombre  ||'';
+  document.getElementById('f-modelo').value  = t?.modelo  ||'';
+  document.getElementById('f-patente').value = t?.patente ||'';
+  document.getElementById('f-vin').value     = t?.vin     ||'';
+  document.getElementById('f-servicio').value= t?.servicio||'';
+  buildFechaOptions(t?.fecha||'', t?.localidad||'');
   document.getElementById('modal-overlay').classList.add('open');
 }
 
-function buildFechaOptions(selectedFecha, selectedLoc) {
+function buildFechaOptions(selectedFecha) {
   const scheduled = getScheduledDates();
   const fechaSel  = document.getElementById('f-fecha');
   const locSel    = document.getElementById('f-localidad');
+  const hint      = document.getElementById('f-fecha-hint');
   fechaSel.innerHTML = '<option value="">— Seleccioná fecha programada —</option>';
-  const hint = document.getElementById('f-fecha-hint');
 
-  if (scheduled.length === 0) {
-    hint.textContent = '⚠ No hay fechas programadas en la Agenda aún.';
-    hint.style.color = 'var(--red)';
-    locSel.innerHTML = '<option value="">— Sin fechas disponibles —</option>';
-    locSel.disabled  = true;
+  if (scheduled.length===0) {
+    hint.textContent='⚠ No hay fechas programadas en la Agenda aún.';
+    hint.style.color='var(--red)';
+    locSel.innerHTML='<option value="">— Sin fechas disponibles —</option>';
+    locSel.disabled=true;
     return;
   }
-  hint.textContent = '';
+  hint.textContent='';
 
   scheduled.forEach(([k,v]) => {
-    const opt = document.createElement('option');
-    opt.value = k;
-    opt.textContent = `${fmtDate(k)} — ${v}`;
-    if (k === selectedFecha) opt.selected = true;
+    const opt=document.createElement('option');
+    opt.value=k; opt.textContent=`${fmtDate(k)} — ${v}`;
+    if (k===selectedFecha) opt.selected=true;
     fechaSel.appendChild(opt);
   });
 
-  // Fill locality from selected date
   const syncLoc = () => {
-    const chosen = fechaSel.value;
-    const loc    = agendaDays[chosen] || '';
-    locSel.innerHTML = loc
-      ? `<option value="${loc}">${loc}</option>`
-      : `<option value="">— Elegí una fecha primero —</option>`;
+    const loc = agendaDays[fechaSel.value]||'';
+    locSel.innerHTML = loc ? `<option value="${loc}">${loc}</option>` : `<option value="">— Elegí una fecha primero —</option>`;
     locSel.disabled = !loc;
   };
   fechaSel.onchange = syncLoc;
   syncLoc();
-
-  // If editing, pre-select
-  if (selectedFecha) {
-    fechaSel.value = selectedFecha;
-    syncLoc();
-  }
+  if (selectedFecha) { fechaSel.value=selectedFecha; syncLoc(); }
 }
 
 function editTurno(id) { openModal(id); }
 function closeModal()  { document.getElementById('modal-overlay').classList.remove('open'); editingId=null; }
 
-function saveTurno() {
+async function saveTurno() {
   const nombre   = document.getElementById('f-nombre').value.trim();
   const modelo   = document.getElementById('f-modelo').value.trim();
   const patente  = document.getElementById('f-patente').value.trim();
@@ -614,36 +688,72 @@ function saveTurno() {
   if (!nombre||!modelo||!patente||!servicio||!fecha||!localidad) {
     alert('Completá todos los campos obligatorios.'); return;
   }
-  if (editingId) {
-    const idx = turnos.findIndex(t => t.id===editingId);
-    if (idx!==-1) turnos[idx] = {...turnos[idx], nombre, modelo, patente, vin, servicio, fecha, localidad};
-  } else {
-    turnos.push({id: Date.now().toString(), nombre, modelo, patente, vin, servicio, fecha, localidad});
+
+  const record = {
+    id: editingId || Date.now().toString(),
+    nombre, modelo, patente, vin, servicio, fecha, localidad
+  };
+
+  setSyncStatus('loading','Guardando…');
+  try {
+    await db.upsertTurno(record);
+    if (editingId) {
+      const idx = turnos.findIndex(t=>t.id===editingId);
+      if (idx!==-1) turnos[idx] = record;
+    } else {
+      turnos.push(record);
+    }
+    setSyncStatus('ok','Sincronizado');
+    closeModal();
+    buildTurnoFilters();
+    renderTurnos();
+    renderCalendar();
+  } catch(e) {
+    setSyncStatus('error','Error al guardar');
+    alert('Error al guardar: '+e.message);
   }
-  save(); closeModal(); buildTurnoFilters(); renderTurnos(); renderCalendar();
 }
 
-function deleteTurno(id) {
+async function deleteTurno(id) {
   if (!confirm('¿Eliminás este turno?')) return;
-  turnos = turnos.filter(t => t.id!==id);
-  save(); buildTurnoFilters(); renderTurnos(); renderCalendar();
+  setSyncStatus('loading','Eliminando…');
+  try {
+    await db.deleteTurno(id);
+    turnos = turnos.filter(t=>t.id!==id);
+    setSyncStatus('ok','Sincronizado');
+    buildTurnoFilters(); renderTurnos(); renderCalendar();
+  } catch(e) {
+    setSyncStatus('error','Error al eliminar');
+  }
 }
 
-// Auto-complete cliente en modal
+// ══════════════════════════════════════════
+//  AUTOCOMPLETE CLIENTE
+// ══════════════════════════════════════════
+function getClientesList() {
+  const map={};
+  turnos.forEach(t=>{
+    const key=(t.patente||t.vin||t.nombre).toUpperCase();
+    if (!map[key]) map[key]={nombre:t.nombre,modelo:t.modelo,patente:t.patente,vin:t.vin||'',historial:[]};
+    map[key].historial.push({fecha:t.fecha,servicio:t.servicio,localidad:t.localidad,id:t.id});
+  });
+  return Object.values(map).sort((a,b)=>a.nombre.localeCompare(b.nombre));
+}
+
 function autoCompleteCliente() {
   const q = document.getElementById('f-nombre').value.trim().toLowerCase();
-  const box = document.getElementById('cliente-suggestions');
-  box.innerHTML = '';
-  if (q.length < 2) return;
-  const matches = getClientesList().filter(c => c.nombre.toLowerCase().includes(q)).slice(0,5);
-  if (matches.length===0) return;
-  const ul = document.createElement('div');
+  const box= document.getElementById('cliente-suggestions');
+  box.innerHTML='';
+  if (q.length<2) return;
+  const matches = getClientesList().filter(c=>c.nombre.toLowerCase().includes(q)).slice(0,5);
+  if (!matches.length) return;
+  const ul=document.createElement('div');
   ul.style.cssText='position:absolute;left:0;right:0;background:white;border:1px solid var(--gray-200);border-radius:8px;box-shadow:var(--shadow-md);z-index:300;';
-  matches.forEach(c => {
-    const item = document.createElement('div');
+  matches.forEach(c=>{
+    const item=document.createElement('div');
     item.style.cssText='padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--gray-100);';
     item.innerHTML=`<strong>${c.nombre}</strong> <span style="color:var(--gray-400);font-size:11px">${c.patente} · ${c.modelo}</span>`;
-    item.addEventListener('mousedown', e => {
+    item.addEventListener('mousedown',e=>{
       e.preventDefault();
       document.getElementById('f-nombre').value  = c.nombre;
       document.getElementById('f-modelo').value  = c.modelo;
@@ -655,44 +765,28 @@ function autoCompleteCliente() {
   });
   box.appendChild(ul);
 }
-document.addEventListener('click', () => {
-  const box = document.getElementById('cliente-suggestions');
-  if (box) box.innerHTML='';
-});
 
-// ════════ CLIENTES ════════
-function getClientesList() {
-  const map = {};
-  turnos.forEach(t => {
-    const key = (t.patente||t.vin||t.nombre).toUpperCase();
-    if (!map[key]) {
-      map[key] = { nombre:t.nombre, modelo:t.modelo, patente:t.patente, vin:t.vin||'', historial:[] };
-    }
-    map[key].historial.push({ fecha:t.fecha, servicio:t.servicio, localidad:t.localidad, id:t.id });
-  });
-  return Object.values(map).sort((a,b)=>a.nombre.localeCompare(b.nombre));
-}
-
+// ══════════════════════════════════════════
+//  CLIENTES
+// ══════════════════════════════════════════
 function renderClientes() {
-  const q   = document.getElementById('cliente-search').value.toLowerCase();
+  const q    = document.getElementById('cliente-search').value.toLowerCase();
   const grid = document.getElementById('clientes-grid');
   const empty= document.getElementById('clientes-empty');
   const all  = getClientesList();
-  const filtered = q ? all.filter(c =>
-    c.nombre.toLowerCase().includes(q) ||
-    c.patente.toLowerCase().includes(q) ||
-    (c.vin||'').toLowerCase().includes(q)
+  const filtered = q ? all.filter(c=>
+    c.nombre.toLowerCase().includes(q)||c.patente.toLowerCase().includes(q)||(c.vin||'').toLowerCase().includes(q)
   ) : all;
 
   grid.innerHTML='';
-  if (filtered.length===0) { empty.style.display='block'; return; }
+  if (!filtered.length) { empty.style.display='block'; return; }
   empty.style.display='none';
 
-  filtered.forEach(c => {
-    const card = document.createElement('div');
+  filtered.forEach(c=>{
+    const card=document.createElement('div');
     card.className='client-card';
-    const sorted = [...c.historial].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
-    const last = sorted[0];
+    const sorted=[...c.historial].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+    const last=sorted[0];
     card.innerHTML=`
       <div class="client-name">${c.nombre}</div>
       <div class="client-meta">${c.modelo} · ${c.patente}</div>
@@ -700,258 +794,202 @@ function renderClientes() {
         <span class="tag tag-green">🔧 ${c.historial.length} servicio${c.historial.length!==1?'s':''}</span>
         <span style="font-size:11px;color:var(--gray-400)">${last?'Último: '+fmtDate(last.fecha):''}</span>
       </div>`;
-    card.onclick = () => openClientDetail(c);
+    card.onclick=()=>openClientDetail(c);
     grid.appendChild(card);
   });
 }
 
 function openClientDetail(c) {
-  document.getElementById('cd-name').textContent = c.nombre;
+  document.getElementById('cd-name').textContent    = c.nombre;
   document.getElementById('cd-vehicle').textContent = `${c.modelo} · Patente: ${c.patente}${c.vin?' · VIN: '+c.vin:''}`;
-  const hist = document.getElementById('cd-history');
-  const sorted = [...c.historial].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
-  if (sorted.length===0) {
-    hist.innerHTML='<p style="color:var(--gray-400);font-size:13px">Sin historial.</p>';
-  } else {
-    hist.innerHTML = `<div class="legend-title" style="margin-bottom:10px">Historial de servicios (${sorted.length})</div>` +
-      sorted.map(h=>`
+  const hist=document.getElementById('cd-history');
+  const sorted=[...c.historial].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  hist.innerHTML = sorted.length===0
+    ? '<p style="color:var(--gray-400);font-size:13px">Sin historial.</p>'
+    : `<div class="legend-title" style="margin-bottom:10px">Historial (${sorted.length} servicio${sorted.length!==1?'s':''})</div>`
+      + sorted.map(h=>`
         <div class="history-item">
           <div class="history-date">📅 ${fmtDate(h.fecha)}</div>
           <div class="history-service">${h.servicio}</div>
           <div class="history-locality">📍 ${h.localidad}</div>
         </div>`).join('');
-  }
   document.getElementById('client-detail-overlay').classList.add('open');
 }
 function closeClientDetail() { document.getElementById('client-detail-overlay').classList.remove('open'); }
 
-// ════════ MAPA ════════
+// ══════════════════════════════════════════
+//  MAPA
+// ══════════════════════════════════════════
 const LOCALITIES_MAP = [
-  { name:'Córdoba Capital', lat:-31.4201, lng:-64.1888, noRadius:true },
-  { name:'Canals',          lat:-33.5667, lng:-62.8833 },
-  { name:'Despeñaderos',    lat:-31.9167, lng:-64.3    },
-  { name:'Coronel Moldes',  lat:-33.6167, lng:-64.6    },
-  { name:'La Carlota',      lat:-33.4167, lng:-63.3    },
-  { name:'Villa Dolores',   lat:-31.9333, lng:-65.1833 },
-  { name:'Tránsito',        lat:-30.8167, lng:-63.9833 },
-  { name:'Jesús María',     lat:-30.9833, lng:-64.0833 },
-  { name:'San Guillermo',   lat:-30.3667, lng:-61.9167 },
+  {name:'Córdoba Capital',lat:-31.4201,lng:-64.1888,noRadius:true},
+  {name:'Canals',         lat:-33.5667,lng:-62.8833},
+  {name:'Despeñaderos',   lat:-31.9167,lng:-64.3   },
+  {name:'Coronel Moldes', lat:-33.6167,lng:-64.6   },
+  {name:'La Carlota',     lat:-33.4167,lng:-63.3   },
+  {name:'Villa Dolores',  lat:-31.9333,lng:-65.1833},
+  {name:'Tránsito',       lat:-30.8167,lng:-63.9833},
+  {name:'Jesús María',    lat:-30.9833,lng:-64.0833},
+  {name:'San Guillermo',  lat:-30.3667,lng:-61.9167},
 ];
 const BLOCKED_MAP = [
-  { name:'Villa María',   lat:-32.4069, lng:-63.2417 },
-  { name:'Río Cuarto',    lat:-33.1307, lng:-64.3499 },
-  { name:'San Francisco', lat:-31.4278, lng:-62.0853 },
+  {name:'Villa María',   lat:-32.4069,lng:-63.2417},
+  {name:'Río Cuarto',    lat:-33.1307,lng:-64.3499},
+  {name:'San Francisco', lat:-31.4278,lng:-62.0853},
 ];
-
-const R_EARTH = 6371;
+const R_EARTH=6371;
 function haversineKm(la1,ln1,la2,ln2){
-  const dLa=(la2-la1)*Math.PI/180, dLn=(ln2-ln1)*Math.PI/180;
+  const dLa=(la2-la1)*Math.PI/180,dLn=(ln2-ln1)*Math.PI/180;
   const a=Math.sin(dLa/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLn/2)**2;
   return R_EARTH*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
 let _map, _searchMarker;
-
 function initMap() {
-  window._mapInit = true;
-  _map = L.map('map').setView([-32.0,-63.9],7);
-
-  // Political/clean CartoDB tiles
+  window._mapInit=true;
+  _map=L.map('map').setView([-32.0,-63.9],7);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'© OpenStreetMap © CARTO', subdomains:'abcd', maxZoom:18
+    attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:18
   }).addTo(_map);
 
-  // Service localities — 30 km radius (except Córdoba Capital)
-  LOCALITIES_MAP.forEach(loc => {
-    if (!loc.noRadius) {
-      L.circle([loc.lat,loc.lng],{
-        radius:30000, color:'#f97316', weight:1.5, dashArray:'6,5',
-        fillColor:'#f97316', fillOpacity:0.08
-      }).addTo(_map);
-    }
-    const icon = L.divIcon({
-      className:'',
-      html:`<div style="background:#f97316;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,
-      iconSize:[14,14],iconAnchor:[7,7]
-    });
-    const n = turnos.filter(t=>t.localidad===loc.name).length;
-    const marker = L.marker([loc.lat,loc.lng],{icon}).addTo(_map);
-    marker.bindPopup(`<div style="font-family:Inter,sans-serif">
-      <div style="font-weight:700;font-size:14px;color:#1a2744;margin-bottom:5px">📍 ${loc.name}</div>
-      <div style="font-size:12px;color:#5c6480">🛠 ${n} turno${n!==1?'s':''} registrado${n!==1?'s':''}</div>
-      <div style="font-size:11px;color:#9ba3b8;margin-top:3px">${loc.noRadius?'Cobertura sin radio fijo':'Radio de acción: 30 km'}</div>
-    </div>`);
-    marker.on('click',()=>showMapInfo(loc,'service'));
+  LOCALITIES_MAP.forEach(loc=>{
+    if (!loc.noRadius) L.circle([loc.lat,loc.lng],{radius:30000,color:'#f97316',weight:1.5,dashArray:'6,5',fillColor:'#f97316',fillOpacity:0.08}).addTo(_map);
+    const icon=L.divIcon({className:'',html:`<div style="background:#f97316;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,iconSize:[14,14],iconAnchor:[7,7]});
+    const n=turnos.filter(t=>t.localidad===loc.name).length;
+    const m=L.marker([loc.lat,loc.lng],{icon}).addTo(_map);
+    m.bindPopup(`<div style="font-family:Inter,sans-serif"><div style="font-weight:700;font-size:14px;color:#1a2744;margin-bottom:5px">📍 ${loc.name}</div><div style="font-size:12px;color:#5c6480">🛠 ${n} turno${n!==1?'s':''}</div><div style="font-size:11px;color:#9ba3b8;margin-top:3px">${loc.noRadius?'Sin radio fijo':'Radio: 30 km'}</div></div>`);
+    m.on('click',()=>showMapInfo(loc,'service'));
   });
 
-  // Blocked localities — 20 km radius
-  BLOCKED_MAP.forEach(loc => {
-    L.circle([loc.lat,loc.lng],{
-      radius:20000, color:'#ef4444', weight:1.5, dashArray:'4,4',
-      fillColor:'#ef4444', fillOpacity:0.08
-    }).addTo(_map);
-    const icon = L.divIcon({
-      className:'',
-      html:`<div style="background:#ef4444;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,
-      iconSize:[14,14],iconAnchor:[7,7]
-    });
-    const marker = L.marker([loc.lat,loc.lng],{icon}).addTo(_map);
-    marker.bindPopup(`<div style="font-family:Inter,sans-serif">
-      <div style="font-weight:700;font-size:14px;color:#ef4444;margin-bottom:4px">⛔ ${loc.name}</div>
-      <div style="font-size:12px;color:#5c6480">Zona restringida — no se puede coordinar servicio aquí.</div>
-      <div style="font-size:11px;color:#9ba3b8;margin-top:3px">Radio de exclusión: 20 km</div>
-    </div>`);
-    marker.on('click',()=>showMapInfo(loc,'blocked'));
+  BLOCKED_MAP.forEach(loc=>{
+    L.circle([loc.lat,loc.lng],{radius:20000,color:'#ef4444',weight:1.5,dashArray:'4,4',fillColor:'#ef4444',fillOpacity:0.08}).addTo(_map);
+    const icon=L.divIcon({className:'',html:`<div style="background:#ef4444;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,iconSize:[14,14],iconAnchor:[7,7]});
+    const m=L.marker([loc.lat,loc.lng],{icon}).addTo(_map);
+    m.bindPopup(`<div style="font-family:Inter,sans-serif"><div style="font-weight:700;font-size:14px;color:#ef4444;margin-bottom:4px">⛔ ${loc.name}</div><div style="font-size:12px;color:#5c6480">Zona restringida — radio 20 km</div></div>`);
+    m.on('click',()=>showMapInfo(loc,'blocked'));
   });
 }
 
-function showMapInfo(loc, type) {
-  const card = document.getElementById('map-info-card');
-  const isBlocked = type==='blocked';
-  const nearby = LOCALITIES_MAP.filter(o => haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=30);
-  const nearbyBlocked = BLOCKED_MAP.filter(o => o.name!==loc.name && haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=20);
-
-  let html = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-    <span style="font-size:16px">${isBlocked?'⛔':'📍'}</span>
+function showMapInfo(loc,type){
+  const card=document.getElementById('map-info-card');
+  const isBlocked=type==='blocked';
+  let html=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+    <span>${isBlocked?'⛔':'📍'}</span>
     <span style="font-size:15px;font-weight:700;color:${isBlocked?'#ef4444':'#1a2744'}">${loc.name}</span>
     <span style="font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;background:${isBlocked?'#fee2e2':'#fff3e0'};color:${isBlocked?'#ef4444':'#f97316'}">${isBlocked?'RESTRINGIDA':'ACTIVA'}</span>
   </div>`;
-
   if (isBlocked) {
-    html += `<p style="font-size:13px;color:#5c6480;margin-bottom:8px">Zona restringida. No se coordinan turnos en esta área (radio 20 km).</p>`;
-    const nearSvc = LOCALITIES_MAP.filter(o => haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=30);
-    if (nearSvc.length>0) {
-      html += `<div style="font-size:11px;font-weight:700;color:#1a2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Localidades de servicio cercanas</div>`;
-      html += `<div class="nearby-chips">`+nearSvc.map(n=>{
-        const d=Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng));
-        return `<span class="nearby-chip">📍 ${n.name} ~${d} km</span>`;
-      }).join('')+`</div>`;
+    html+=`<p style="font-size:13px;color:#5c6480;margin-bottom:8px">Zona restringida. Radio de exclusión: 20 km.</p>`;
+    const near=LOCALITIES_MAP.filter(o=>haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=30);
+    if (near.length>0) {
+      html+=`<div style="font-size:11px;font-weight:700;color:#1a2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Localidades de servicio cercanas</div>`;
+      html+=`<div class="nearby-chips">`+near.map(n=>`<span class="nearby-chip">📍 ${n.name} ~${Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng))} km</span>`).join('')+`</div>`;
     }
   } else {
-    const n = turnos.filter(t=>t.localidad===loc.name).length;
-    html += `<div style="font-size:13px;color:#5c6480;margin-bottom:8px">🛠 ${n} turno${n!==1?'s':''} registrado${n!==1?'s':''}</div>`;
-    const near2 = nearby.filter(o=>o.name!==loc.name);
+    const n=turnos.filter(t=>t.localidad===loc.name).length;
+    html+=`<div style="font-size:13px;color:#5c6480;margin-bottom:8px">🛠 ${n} turno${n!==1?'s':''} registrado${n!==1?'s':''}</div>`;
+    const near2=LOCALITIES_MAP.filter(o=>o.name!==loc.name&&haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=30);
     if (near2.length>0) {
-      html += `<div style="font-size:11px;font-weight:700;color:#1a2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Localidades activas en radio 30 km</div>`;
-      html += `<div class="nearby-chips">`+near2.map(n=>{
-        const d=Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng));
-        return `<span class="nearby-chip">📍 ${n.name} ~${d} km</span>`;
-      }).join('')+`</div>`;
+      html+=`<div style="font-size:11px;font-weight:700;color:#1a2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Localidades activas en radio 30 km</div>`;
+      html+=`<div class="nearby-chips">`+near2.map(n=>`<span class="nearby-chip">📍 ${n.name} ~${Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng))} km</span>`).join('')+`</div>`;
     } else {
-      html += `<p style="font-size:12px;color:#9ba3b8;margin-top:4px">Sin otras localidades activas en el radio de 30 km.</p>`;
+      html+=`<p style="font-size:12px;color:#9ba3b8">Sin otras localidades activas en 30 km.</p>`;
     }
-    if (nearbyBlocked.length>0) {
-      html += `<div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.5px;margin-top:12px;margin-bottom:6px">Zonas restringidas cercanas (20 km)</div>`;
-      html += `<div class="nearby-chips">`+nearbyBlocked.map(n=>{
-        const d=Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng));
-        return `<span class="blocked-chip">⛔ ${n.name} ~${d} km</span>`;
-      }).join('')+`</div>`;
+    const nearB=BLOCKED_MAP.filter(o=>haversineKm(loc.lat,loc.lng,o.lat,o.lng)<=20);
+    if (nearB.length>0) {
+      html+=`<div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.5px;margin-top:12px;margin-bottom:6px">Zonas restringidas cercanas</div>`;
+      html+=`<div class="nearby-chips">`+nearB.map(n=>`<span class="blocked-chip">⛔ ${n.name} ~${Math.round(haversineKm(loc.lat,loc.lng,n.lat,n.lng))} km</span>`).join('')+`</div>`;
     }
   }
-  card.innerHTML = `<div class="legend-title" style="margin-bottom:6px">Información de zona</div>` + html;
+  card.innerHTML=`<div class="legend-title" style="margin-bottom:6px">Información de zona</div>`+html;
 }
 
-// ── MAP SEARCH ──
 let _searchTimeout;
-function mapSearch() {
+function mapSearch(){
   clearTimeout(_searchTimeout);
-  const q = document.getElementById('map-search').value.trim();
-  const resultsEl = document.getElementById('search-results');
-  if (q.length < 2) { resultsEl.classList.remove('open'); return; }
-
-  const allPlaces = [
-    ...LOCALITIES_MAP.map(l=>({...l,type:'service',label:l.name})),
-    ...BLOCKED_MAP.map(l=>({...l,type:'blocked',label:l.name})),
-  ];
-  const local = allPlaces.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
-  if (local.length>0) { showSearchResults(local,resultsEl); return; }
-
-  _searchTimeout = setTimeout(async ()=>{
-    try {
-      const url=`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q+', Córdoba, Argentina')}&format=json&limit=6&countrycodes=ar`;
-      const res = await fetch(url,{headers:{'Accept-Language':'es'}});
-      const data = await res.json();
-      showSearchResults(data.map(d=>({
-        name: d.display_name.split(',')[0],
-        lat:  parseFloat(d.lat), lng: parseFloat(d.lon),
-        type:'search', label: d.display_name.split(',').slice(0,3).join(',')
-      })), resultsEl);
-    } catch(e) { resultsEl.classList.remove('open'); }
-  }, 400);
+  const q=document.getElementById('map-search').value.trim();
+  const el=document.getElementById('search-results');
+  if (q.length<2){el.classList.remove('open');return;}
+  const all=[...LOCALITIES_MAP.map(l=>({...l,type:'service',label:l.name})),...BLOCKED_MAP.map(l=>({...l,type:'blocked',label:l.name}))];
+  const local=all.filter(p=>p.name.toLowerCase().includes(q.toLowerCase()));
+  if (local.length>0){showSearchResults(local,el);return;}
+  _searchTimeout=setTimeout(async()=>{
+    try{
+      const res=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q+', Córdoba, Argentina')}&format=json&limit=6&countrycodes=ar`,{headers:{'Accept-Language':'es'}});
+      const data=await res.json();
+      showSearchResults(data.map(d=>({name:d.display_name.split(',')[0],lat:parseFloat(d.lat),lng:parseFloat(d.lon),type:'search',label:d.display_name.split(',').slice(0,3).join(',')})),el);
+    }catch(e){el.classList.remove('open');}
+  },400);
 }
-
-function showSearchResults(items, el) {
-  if (!items.length) { el.classList.remove('open'); return; }
+function showSearchResults(items,el){
+  if(!items.length){el.classList.remove('open');return;}
   el.innerHTML='';
   items.forEach(item=>{
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='search-result-item';
-    const lbl = item.type==='service'?'ACTIVA':item.type==='blocked'?'RESTRINGIDA':'LOCALIDAD';
-    const cls = item.type==='service'?'result-service':item.type==='blocked'?'result-blocked':'';
-    div.innerHTML=`<span>${item.type==='blocked'?'⛔':item.type==='service'?'📍':'🔵'}</span>
-      <span style="flex:1;font-size:13px">${item.label}</span>
-      <span class="result-type ${cls}">${lbl}</span>`;
+    const lbl=item.type==='service'?'ACTIVA':item.type==='blocked'?'RESTRINGIDA':'LOCALIDAD';
+    const cls=item.type==='service'?'result-service':item.type==='blocked'?'result-blocked':'';
+    div.innerHTML=`<span>${item.type==='blocked'?'⛔':item.type==='service'?'📍':'🔵'}</span><span style="flex:1;font-size:13px">${item.label}</span><span class="result-type ${cls}">${lbl}</span>`;
     div.addEventListener('click',()=>{
       _map.setView([item.lat,item.lng],11);
       document.getElementById('map-search').value=item.name;
       el.classList.remove('open');
-      if (item.type==='search') {
-        if(_searchMarker) _map.removeLayer(_searchMarker);
-        _searchMarker = L.marker([item.lat,item.lng],{icon:L.divIcon({
-          className:'',
-          html:`<div style="background:#3b82f6;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,
-          iconSize:[14,14],iconAnchor:[7,7]
-        })}).addTo(_map).bindPopup(`<div style="font-family:Inter,sans-serif;font-weight:600;color:#1a2744">${item.name}</div>`).openPopup();
-        showSearchInfo(item);
-      } else {
-        showMapInfo(item,item.type);
-      }
+      if(item.type==='search'){
+        if(_searchMarker)_map.removeLayer(_searchMarker);
+        _searchMarker=L.marker([item.lat,item.lng],{icon:L.divIcon({className:'',html:`<div style="background:#3b82f6;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,iconSize:[14,14],iconAnchor:[7,7]})}).addTo(_map).bindPopup(`<b>${item.name}</b>`).openPopup();
+        const nearSvc=LOCALITIES_MAP.filter(o=>haversineKm(item.lat,item.lng,o.lat,o.lng)<=30);
+        const nearBlk=BLOCKED_MAP.filter(o=>haversineKm(item.lat,item.lng,o.lat,o.lng)<=20);
+        let html=`<div style="font-size:15px;font-weight:700;color:#1a2744;margin-bottom:8px">🔵 ${item.name}</div>`;
+        if(nearSvc.length>0){html+=`<div style="font-size:11px;font-weight:700;color:#1a2744;margin-bottom:6px;text-transform:uppercase">Localidades activas cercanas (30 km)</div><div class="nearby-chips">`+nearSvc.map(n=>`<span class="nearby-chip">📍 ${n.name} ~${Math.round(haversineKm(item.lat,item.lng,n.lat,n.lng))} km</span>`).join('')+`</div>`;}
+        else{html+=`<p style="font-size:13px;color:#9ba3b8">Sin localidades activas en 30 km.</p>`;}
+        if(nearBlk.length>0){html+=`<div style="font-size:11px;font-weight:700;color:#ef4444;margin-top:12px;margin-bottom:6px;text-transform:uppercase">Zonas restringidas (20 km)</div><div class="nearby-chips">`+nearBlk.map(n=>`<span class="blocked-chip">⛔ ${n.name} ~${Math.round(haversineKm(item.lat,item.lng,n.lat,n.lng))} km</span>`).join('')+`</div>`;}
+        document.getElementById('map-info-card').innerHTML=`<div class="legend-title" style="margin-bottom:6px">Información de zona</div>`+html;
+      } else { showMapInfo(item,item.type); }
     });
     el.appendChild(div);
   });
   el.classList.add('open');
 }
 
-function showSearchInfo(item) {
-  const card = document.getElementById('map-info-card');
-  const nearSvc     = LOCALITIES_MAP.filter(o=>haversineKm(item.lat,item.lng,o.lat,o.lng)<=30);
-  const nearBlocked = BLOCKED_MAP.filter(o=>haversineKm(item.lat,item.lng,o.lat,o.lng)<=20);
-
-  let html=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-    <span>🔵</span>
-    <span style="font-size:15px;font-weight:700;color:#1a2744">${item.name}</span>
-    <span style="font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;background:#eff6ff;color:#3b82f6">BÚSQUEDA</span>
-  </div>`;
-
-  if (nearSvc.length>0) {
-    html+=`<div style="font-size:11px;font-weight:700;color:#1a2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Localidades de servicio cercanas (30 km)</div>`;
-    html+=`<div class="nearby-chips">`+nearSvc.map(n=>{
-      const d=Math.round(haversineKm(item.lat,item.lng,n.lat,n.lng));
-      return `<span class="nearby-chip">📍 ${n.name} ~${d} km</span>`;
-    }).join('')+`</div>`;
-  } else {
-    html+=`<p style="font-size:13px;color:#9ba3b8">Sin localidades de servicio activas dentro de 30 km.</p>`;
+// ══════════════════════════════════════════
+//  EVENTOS GLOBALES
+// ══════════════════════════════════════════
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-wrap')) document.getElementById('search-results').classList.remove('open');
+  if(!e.target.closest('#modal-overlay .modal') && !e.target.closest('.btn-primary[onclick="openModal()"]')) {
+    const box=document.getElementById('cliente-suggestions'); if(box) box.innerHTML='';
   }
-  if (nearBlocked.length>0) {
-    html+=`<div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:0.5px;margin-top:12px;margin-bottom:6px">Zonas restringidas cercanas (20 km)</div>`;
-    html+=`<div class="nearby-chips">`+nearBlocked.map(n=>{
-      const d=Math.round(haversineKm(item.lat,item.lng,n.lat,n.lng));
-      return `<span class="blocked-chip">⛔ ${n.name} ~${d} km</span>`;
-    }).join('')+`</div>`;
-  }
-  card.innerHTML=`<div class="legend-title" style="margin-bottom:6px">Información de zona</div>`+html;
-}
-
-document.addEventListener('click', e=>{
-  if (!e.target.closest('.search-wrap')) document.getElementById('search-results').classList.remove('open');
 });
-document.getElementById('modal-overlay').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-document.getElementById('client-detail-overlay').addEventListener('click', function(e){ if(e.target===this) closeClientDetail(); });
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('client-detail-overlay').addEventListener('click',function(e){if(e.target===this)closeClientDetail();});
 
-// ════════ INIT ════════
-renderCalendar();
-buildTurnoFilters();
-renderTurnos();
+// ══════════════════════════════════════════
+//  AUTO-REFRESH cada 30 segundos
+// ══════════════════════════════════════════
+async function refreshData() {
+  try {
+    const [tData,aData] = await Promise.all([db.getTurnos(), db.getAgenda()]);
+    turnos = tData;
+    agendaDays = {};
+    aData.forEach(r=>{ agendaDays[r.fecha_key]=r.localidad; });
+    // Re-render active tab silently
+    const activePanel = document.querySelector('.panel.active')?.id;
+    if (activePanel==='panel-agenda')   renderCalendar();
+    if (activePanel==='panel-turnos')   { buildTurnoFilters(); renderTurnos(); }
+    if (activePanel==='panel-clientes') renderClientes();
+    setSyncStatus('ok','Sincronizado');
+  } catch(e) { setSyncStatus('error','Sin conexión'); }
+}
+setInterval(refreshData, 30000);
+
+// ══════════════════════════════════════════
+//  ARRANQUE
+// ══════════════════════════════════════════
+(async () => {
+  await loadAll();
+  renderCalendar();
+  buildTurnoFilters();
+  renderTurnos();
+})();
 </script>
 </body>
 </html>
