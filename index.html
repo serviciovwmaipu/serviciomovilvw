@@ -8,14 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
 :root {
-  --navy:#1a2744;--navy-light:#243460;--orange:#f97316;--orange-dark:#ea6c0a;
-  --orange-glow:rgba(249,115,22,0.15);--cream:#f8f9fc;--gray-100:#f1f3f8;
-  --gray-200:#e2e6f0;--gray-400:#9ba3b8;--gray-600:#5c6480;--gray-800:#2d3350;
-  --white:#ffffff;--red:#ef4444;--shadow-sm:0 1px 3px rgba(26,39,68,0.12);
-  --shadow-md:0 4px 16px rgba(26,39,68,0.14);--shadow-lg:0 8px 32px rgba(26,39,68,0.18);
-  --radius:10px;--radius-lg:16px;
+--navy:#1a2744;--navy-light:#243460;--orange:#f97316;--orange-dark:#ea6c0a;
+--orange-glow:rgba(249,115,22,0.15);--cream:#f8f9fc;--gray-100:#f1f3f8;
+--gray-200:#e2e6f0;--gray-400:#9ba3b8;--gray-600:#5c6480;--gray-800:#2d3350;
+--white:#ffffff;--red:#ef4444;--shadow-sm:0 1px 3px rgba(26,39,68,0.12);
+--shadow-md:0 4px 16px rgba(26,39,68,0.14);--shadow-lg:0 8px 32px rgba(26,39,68,0.18);
+--radius:10px;--radius-lg:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--gray-800);min-height:100vh;}
@@ -144,12 +145,12 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
 .loading-spinner{width:36px;height:36px;border:3px solid var(--gray-200);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 @media(max-width:700px){
-  header{padding:0 14px;}
-  .panel{padding:16px 14px;}
-  .tab-btn{padding:12px 10px;font-size:12px;}
-  .form-grid{grid-template-columns:1fr;}
-  .cal-grid{gap:3px;}
-  .cal-cell{min-height:80px;}
+header{padding:0 14px;}
+.panel{padding:16px 14px;}
+.tab-btn{padding:12px 10px;font-size:12px;}
+.form-grid{grid-template-columns:1fr;}
+.cal-grid{gap:3px;}
+.cal-cell{min-height:80px;}
 }
 </style>
 </head>
@@ -177,10 +178,10 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
 </header>
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('agenda')"  id="tab-agenda">📅 Agenda</button>
-  <button class="tab-btn"        onclick="switchTab('turnos')"  id="tab-turnos">🛠 Turnos</button>
-  <button class="tab-btn"        onclick="switchTab('clientes')" id="tab-clientes">👤 Clientes</button>
-  <button class="tab-btn"        onclick="switchTab('mapa')"    id="tab-mapa">🗺 Mapa</button>
+  <button class="tab-btn active" onclick="switchTab('agenda')" id="tab-agenda">📅 Agenda</button>
+  <button class="tab-btn" onclick="switchTab('turnos')" id="tab-turnos">🛠 Turnos</button>
+  <button class="tab-btn" onclick="switchTab('clientes')" id="tab-clientes">👤 Clientes</button>
+  <button class="tab-btn" onclick="switchTab('mapa')" id="tab-mapa">🗺 Mapa</button>
 </div>
 
 <!-- AGENDA -->
@@ -223,9 +224,9 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
     <button class="btn btn-primary" onclick="openModal()">＋ Nuevo turno</button>
   </div>
   <div class="filter-bar">
-    <input type="text" class="search-input" id="search-input" placeholder="🔍  Buscar cliente, patente, VIN..." oninput="renderTurnos()">
+    <input type="text" class="search-input" id="search-input" placeholder="🔍 Buscar cliente, patente, VIN..." oninput="renderTurnos()">
     <select id="filter-localidad" onchange="renderTurnos()"><option value="">Todas las localidades</option></select>
-    <select id="filter-fecha"     onchange="renderTurnos()"><option value="">Todas las fechas</option></select>
+    <select id="filter-fecha" onchange="renderTurnos()"><option value="">Todas las fechas</option></select>
   </div>
   <div class="table-wrap">
     <table class="turnos-table">
@@ -249,7 +250,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
     </div>
   </div>
   <div class="filter-bar">
-    <input type="text" class="search-input" id="cliente-search" placeholder="🔍  Buscar por nombre, patente o VIN..." oninput="renderClientes()">
+    <input type="text" class="search-input" id="cliente-search" placeholder="🔍 Buscar por nombre, patente o VIN..." oninput="renderClientes()">
   </div>
   <div id="clientes-grid" class="client-grid"></div>
   <div id="clientes-empty" class="empty-state" style="display:none">
@@ -269,7 +270,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
   </div>
   <div class="map-controls">
     <div class="search-wrap">
-      <input type="text" id="map-search" placeholder="🔍  Buscar localidad o zona..." oninput="mapSearch()" autocomplete="off">
+      <input type="text" id="map-search" placeholder="🔍 Buscar localidad o zona..." oninput="mapSearch()" autocomplete="off">
       <div class="search-results-list" id="search-results"></div>
     </div>
   </div>
@@ -337,22 +338,26 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
 
 <script>
 // ══════════════════════════════════════════
-//  SUPABASE CONFIG
+// SUPABASE CONFIG
 // ══════════════════════════════════════════
 const SB_URL = 'https://ewlypegstwrwnjhlltqj.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3bHlwZWdzdHdyd25qaGxsdHFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwNDk4MDMsImV4cCI6MjA5NjYyNTgwM30.uwjZVRgT7uM6a_2VG2tklXX7ULvZrvqDs_s7bG7THD0';
 
-async function sbFetch(path, options = {}) {
+// ── FIX: función sbFetch limpia, sin duplicar headers ──
+async function sbFetch(path, opts = {}) {
+  const headers = {
+    'apikey': SB_KEY,
+    'Authorization': `Bearer ${SB_KEY}`,
+    'Content-Type': 'application/json',
+  };
+  if (opts.prefer) headers['Prefer'] = opts.prefer;
+
   const res = await fetch(`${SB_URL}/rest/v1/${path}`, {
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': `Bearer ${SB_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': options.prefer || 'return=representation',
-      ...options.headers
-    },
-    ...options
+    method: opts.method || 'GET',
+    headers,
+    body: opts.body || undefined,
   });
+
   if (!res.ok) {
     const err = await res.text();
     throw new Error(err);
@@ -361,60 +366,54 @@ async function sbFetch(path, options = {}) {
   return text ? JSON.parse(text) : [];
 }
 
-// CRUD helpers
+// ── FIX: upserts con on_conflict explícito en la URL ──
 const db = {
   async getTurnos()  { return sbFetch('turnos?order=fecha.asc'); },
   async getAgenda()  { return sbFetch('agenda_days?order=fecha_key.asc'); },
 
   async upsertTurno(t) {
-    return sbFetch('turnos', {
+    return sbFetch('turnos?on_conflict=id', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates,return=representation',
-      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify(t)
+      body: JSON.stringify(t),
     });
   },
+
   async deleteTurno(id) {
-    return sbFetch(`turnos?id=eq.${id}`, { method: 'DELETE', prefer: '' });
+    return sbFetch(`turnos?id=eq.${id}`, { method: 'DELETE' });
   },
+
   async upsertAgenda(fecha_key, localidad) {
-    return sbFetch('agenda_days', {
+    return sbFetch('agenda_days?on_conflict=fecha_key', {
       method: 'POST',
       prefer: 'resolution=merge-duplicates,return=representation',
-      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify({ fecha_key, localidad })
+      body: JSON.stringify({ fecha_key, localidad }),
     });
   },
+
   async deleteAgenda(fecha_key) {
-    return sbFetch(`agenda_days?fecha_key=eq.${fecha_key}`, { method: 'DELETE', prefer: '' });
-  }
+    return sbFetch(`agenda_days?fecha_key=eq.${fecha_key}`, { method: 'DELETE' });
+  },
 };
 
 // ══════════════════════════════════════════
-//  STATE
+// STATE
 // ══════════════════════════════════════════
-let turnos     = [];
-let agendaDays = {}; // { 'YYYY-MM-DD': 'Localidad' }
-let editingId  = null;
-let currentYear  = new Date().getFullYear();
+let turnos = [];
+let agendaDays = {};
+let editingId = null;
+let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 
 const LOCALIDADES = ['Córdoba Capital','Canals','Despeñaderos','Coronel Moldes','La Carlota','Villa Dolores','Tránsito','Jesús María','San Guillermo'];
 const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
 function setSyncStatus(state, label) {
-  const dot = document.getElementById('sync-dot');
-  dot.className = 'sync-dot ' + state;
+  document.getElementById('sync-dot').className = 'sync-dot ' + state;
   document.getElementById('sync-label').textContent = label;
 }
+function showLoading(v) { document.getElementById('loading-overlay').classList.toggle('show', v); }
 
-function showLoading(v) {
-  document.getElementById('loading-overlay').classList.toggle('show', v);
-}
-
-// ══════════════════════════════════════════
-//  INIT — load all data
-// ══════════════════════════════════════════
 async function loadAll() {
   showLoading(true);
   setSyncStatus('loading', 'Cargando…');
@@ -433,48 +432,37 @@ async function loadAll() {
 }
 
 // ══════════════════════════════════════════
-//  TABS
+// TABS
 // ══════════════════════════════════════════
 function switchTab(tab) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
-  document.getElementById('tab-'   + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
   if (tab === 'mapa'    && !window._mapInit) initMap();
   if (tab === 'agenda'  ) renderCalendar();
   if (tab === 'turnos'  ) { buildTurnoFilters(); renderTurnos(); }
   if (tab === 'clientes') renderClientes();
 }
 
-// ══════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════
-function dateKey(y, m, d) {
-  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-}
-function fmtDate(k) {
-  if (!k) return '—';
-  const [y,m,d] = k.split('-');
-  return `${d}/${m}/${y}`;
-}
-function getScheduledDates() {
-  return Object.entries(agendaDays).filter(([,v])=>v).sort(([a],[b])=>a.localeCompare(b));
-}
+function dateKey(y, m, d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function fmtDate(k) { if (!k) return '—'; const [y,m,d]=k.split('-'); return `${d}/${m}/${y}`; }
+function getScheduledDates() { return Object.entries(agendaDays).filter(([,v])=>v).sort(([a],[b])=>a.localeCompare(b)); }
 
 // ══════════════════════════════════════════
-//  CALENDAR
+// CALENDAR
 // ══════════════════════════════════════════
 function changeMonth(dir) {
   currentMonth += dir;
   if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-  if (currentMonth <  0) { currentMonth = 11; currentYear--; }
+  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
   renderCalendar();
 }
 
 function renderCalendar() {
   document.getElementById('month-label').textContent = `${MESES[currentMonth]} ${currentYear}`;
-  const today     = new Date();
-  const firstDay  = new Date(currentYear, currentMonth, 1).getDay();
+  const today = new Date();
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
   const daysInMon = new Date(currentYear, currentMonth + 1, 0).getDate();
   const grid = document.getElementById('cal-grid');
   while (grid.children.length > 7) grid.removeChild(grid.lastChild);
@@ -504,8 +492,7 @@ function renderCalendar() {
     const cell = document.createElement('div');
     cell.className = 'cal-cell'+(isWeekend?' weekend':'')+(isToday?' today':'');
     const numEl = document.createElement('div');
-    numEl.className = 'cal-day-num';
-    numEl.textContent = d;
+    numEl.className = 'cal-day-num'; numEl.textContent = d;
     cell.appendChild(numEl);
 
     if (!isWeekend) {
@@ -530,7 +517,7 @@ function renderCalendar() {
           buildTurnoFilters();
         } catch(e) {
           setSyncStatus('error','Error al guardar');
-          console.error(e);
+          alert('Error al guardar la localidad: ' + e.message);
         }
       });
       cell.appendChild(sel);
@@ -553,26 +540,25 @@ function renderCalendar() {
   }
 
   const total = firstDay + daysInMon;
-  const rem   = total % 7;
+  const rem = total % 7;
   if (rem!==0) for (let i=0;i<7-rem;i++) {
     const b=document.createElement('div'); b.className='cal-cell empty'; grid.appendChild(b);
   }
 
-  document.getElementById('stat-total').textContent       = totalTurnos;
-  document.getElementById('stat-dias').textContent        = diasConVisita;
+  document.getElementById('stat-total').textContent = totalTurnos;
+  document.getElementById('stat-dias').textContent = diasConVisita;
   document.getElementById('stat-localidades').textContent = locSet.size;
-  document.getElementById('stat-pendientes').textContent  = sinAsignar;
+  document.getElementById('stat-pendientes').textContent = sinAsignar;
 }
 
 // ══════════════════════════════════════════
-//  TURNOS
+// TURNOS
 // ══════════════════════════════════════════
 function buildTurnoFilters() {
   const scheduled = getScheduledDates();
-  const fechaSel  = document.getElementById('filter-fecha');
-  const locSel    = document.getElementById('filter-localidad');
+  const fechaSel = document.getElementById('filter-fecha');
+  const locSel = document.getElementById('filter-localidad');
   const prevF = fechaSel.value, prevL = locSel.value;
-
   fechaSel.innerHTML = '<option value="">Todas las fechas</option>';
   const locSet = new Set();
   scheduled.forEach(([k,v]) => {
@@ -582,7 +568,6 @@ function buildTurnoFilters() {
     locSet.add(v);
   });
   if (prevF) fechaSel.value = prevF;
-
   locSel.innerHTML = '<option value="">Todas las localidades</option>';
   locSet.forEach(l => {
     const opt=document.createElement('option'); opt.value=l; opt.textContent=l; locSel.appendChild(opt);
@@ -591,16 +576,16 @@ function buildTurnoFilters() {
 }
 
 function renderTurnos() {
-  const tbody    = document.getElementById('turnos-tbody');
-  const empty    = document.getElementById('turnos-empty');
-  const q        = document.getElementById('search-input').value.toLowerCase();
-  const filterLoc= document.getElementById('filter-localidad').value;
-  const filterFec= document.getElementById('filter-fecha').value;
+  const tbody = document.getElementById('turnos-tbody');
+  const empty = document.getElementById('turnos-empty');
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const filterLoc = document.getElementById('filter-localidad').value;
+  const filterFec = document.getElementById('filter-fecha').value;
 
   const filtered = turnos.filter(t => {
-    const matchQ  = !q || [t.nombre,t.patente,t.vin,t.modelo].some(v=>(v||'').toLowerCase().includes(q));
-    const matchL  = !filterLoc || t.localidad===filterLoc;
-    const matchF  = !filterFec || t.fecha===filterFec;
+    const matchQ = !q || [t.nombre,t.patente,t.vin,t.modelo].some(v=>(v||'').toLowerCase().includes(q));
+    const matchL = !filterLoc || t.localidad===filterLoc;
+    const matchF = !filterFec || t.fecha===filterFec;
     return matchQ && matchL && matchF;
   }).sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
 
@@ -631,20 +616,20 @@ function openModal(id) {
   editingId = id||null;
   const t = id ? turnos.find(x=>x.id===id) : null;
   document.getElementById('modal-title-text').textContent = t?'Editar Turno':'Nuevo Turno';
-  document.getElementById('f-nombre').value  = t?.nombre  ||'';
-  document.getElementById('f-modelo').value  = t?.modelo  ||'';
-  document.getElementById('f-patente').value = t?.patente ||'';
-  document.getElementById('f-vin').value     = t?.vin     ||'';
+  document.getElementById('f-nombre').value  = t?.nombre ||'';
+  document.getElementById('f-modelo').value  = t?.modelo ||'';
+  document.getElementById('f-patente').value = t?.patente||'';
+  document.getElementById('f-vin').value     = t?.vin    ||'';
   document.getElementById('f-servicio').value= t?.servicio||'';
-  buildFechaOptions(t?.fecha||'', t?.localidad||'');
+  buildFechaOptions(t?.fecha||'');
   document.getElementById('modal-overlay').classList.add('open');
 }
 
 function buildFechaOptions(selectedFecha) {
   const scheduled = getScheduledDates();
-  const fechaSel  = document.getElementById('f-fecha');
-  const locSel    = document.getElementById('f-localidad');
-  const hint      = document.getElementById('f-fecha-hint');
+  const fechaSel = document.getElementById('f-fecha');
+  const locSel   = document.getElementById('f-localidad');
+  const hint     = document.getElementById('f-fecha-hint');
   fechaSel.innerHTML = '<option value="">— Seleccioná fecha programada —</option>';
 
   if (scheduled.length===0) {
@@ -655,7 +640,6 @@ function buildFechaOptions(selectedFecha) {
     return;
   }
   hint.textContent='';
-
   scheduled.forEach(([k,v]) => {
     const opt=document.createElement('option');
     opt.value=k; opt.textContent=`${fmtDate(k)} — ${v}`;
@@ -674,7 +658,7 @@ function buildFechaOptions(selectedFecha) {
 }
 
 function editTurno(id) { openModal(id); }
-function closeModal()  { document.getElementById('modal-overlay').classList.remove('open'); editingId=null; }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editingId=null; }
 
 async function saveTurno() {
   const nombre   = document.getElementById('f-nombre').value.trim();
@@ -710,7 +694,7 @@ async function saveTurno() {
     renderCalendar();
   } catch(e) {
     setSyncStatus('error','Error al guardar');
-    alert('Error al guardar: '+e.message);
+    alert('Error al guardar el turno:\n' + e.message);
   }
 }
 
@@ -728,7 +712,7 @@ async function deleteTurno(id) {
 }
 
 // ══════════════════════════════════════════
-//  AUTOCOMPLETE CLIENTE
+// AUTOCOMPLETE CLIENTE
 // ══════════════════════════════════════════
 function getClientesList() {
   const map={};
@@ -767,21 +751,19 @@ function autoCompleteCliente() {
 }
 
 // ══════════════════════════════════════════
-//  CLIENTES
+// CLIENTES
 // ══════════════════════════════════════════
 function renderClientes() {
-  const q    = document.getElementById('cliente-search').value.toLowerCase();
+  const q = document.getElementById('cliente-search').value.toLowerCase();
   const grid = document.getElementById('clientes-grid');
   const empty= document.getElementById('clientes-empty');
-  const all  = getClientesList();
+  const all = getClientesList();
   const filtered = q ? all.filter(c=>
     c.nombre.toLowerCase().includes(q)||c.patente.toLowerCase().includes(q)||(c.vin||'').toLowerCase().includes(q)
   ) : all;
-
   grid.innerHTML='';
   if (!filtered.length) { empty.style.display='block'; return; }
   empty.style.display='none';
-
   filtered.forEach(c=>{
     const card=document.createElement('div');
     card.className='client-card';
@@ -800,7 +782,7 @@ function renderClientes() {
 }
 
 function openClientDetail(c) {
-  document.getElementById('cd-name').textContent    = c.nombre;
+  document.getElementById('cd-name').textContent = c.nombre;
   document.getElementById('cd-vehicle').textContent = `${c.modelo} · Patente: ${c.patente}${c.vin?' · VIN: '+c.vin:''}`;
   const hist=document.getElementById('cd-history');
   const sorted=[...c.historial].sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
@@ -818,7 +800,7 @@ function openClientDetail(c) {
 function closeClientDetail() { document.getElementById('client-detail-overlay').classList.remove('open'); }
 
 // ══════════════════════════════════════════
-//  MAPA
+// MAPA
 // ══════════════════════════════════════════
 const LOCALITIES_MAP = [
   {name:'Córdoba Capital',lat:-31.4201,lng:-64.1888,noRadius:true},
@@ -836,6 +818,7 @@ const BLOCKED_MAP = [
   {name:'Río Cuarto',    lat:-33.1307,lng:-64.3499},
   {name:'San Francisco', lat:-31.4278,lng:-62.0853},
 ];
+
 const R_EARTH=6371;
 function haversineKm(la1,ln1,la2,ln2){
   const dLa=(la2-la1)*Math.PI/180,dLn=(ln2-ln1)*Math.PI/180;
@@ -844,6 +827,7 @@ function haversineKm(la1,ln1,la2,ln2){
 }
 
 let _map, _searchMarker;
+
 function initMap() {
   window._mapInit=true;
   _map=L.map('map').setView([-32.0,-63.9],7);
@@ -920,6 +904,7 @@ function mapSearch(){
     }catch(e){el.classList.remove('open');}
   },400);
 }
+
 function showSearchResults(items,el){
   if(!items.length){el.classList.remove('open');return;}
   el.innerHTML='';
@@ -951,19 +936,7 @@ function showSearchResults(items,el){
 }
 
 // ══════════════════════════════════════════
-//  EVENTOS GLOBALES
-// ══════════════════════════════════════════
-document.addEventListener('click',e=>{
-  if(!e.target.closest('.search-wrap')) document.getElementById('search-results').classList.remove('open');
-  if(!e.target.closest('#modal-overlay .modal') && !e.target.closest('.btn-primary[onclick="openModal()"]')) {
-    const box=document.getElementById('cliente-suggestions'); if(box) box.innerHTML='';
-  }
-});
-document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.getElementById('client-detail-overlay').addEventListener('click',function(e){if(e.target===this)closeClientDetail();});
-
-// ══════════════════════════════════════════
-//  AUTO-REFRESH cada 30 segundos
+// AUTO-REFRESH
 // ══════════════════════════════════════════
 async function refreshData() {
   try {
@@ -971,7 +944,6 @@ async function refreshData() {
     turnos = tData;
     agendaDays = {};
     aData.forEach(r=>{ agendaDays[r.fecha_key]=r.localidad; });
-    // Re-render active tab silently
     const activePanel = document.querySelector('.panel.active')?.id;
     if (activePanel==='panel-agenda')   renderCalendar();
     if (activePanel==='panel-turnos')   { buildTurnoFilters(); renderTurnos(); }
@@ -982,8 +954,17 @@ async function refreshData() {
 setInterval(refreshData, 30000);
 
 // ══════════════════════════════════════════
-//  ARRANQUE
+// EVENTOS GLOBALES + ARRANQUE
 // ══════════════════════════════════════════
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-wrap')) document.getElementById('search-results').classList.remove('open');
+  if(!e.target.closest('#modal-overlay .modal') && !e.target.closest('.btn-primary[onclick="openModal()"]')) {
+    const box=document.getElementById('cliente-suggestions'); if(box) box.innerHTML='';
+  }
+});
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('client-detail-overlay').addEventListener('click',function(e){if(e.target===this)closeClientDetail();});
+
 (async () => {
   await loadAll();
   renderCalendar();
