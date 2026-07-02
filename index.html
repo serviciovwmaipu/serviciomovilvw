@@ -111,6 +111,19 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
 .nearby-chip{background:var(--navy);color:var(--white);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
 .blocked-chip{background:#fee2e2;color:var(--red);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;}
 .search-wrap{position:relative;flex:1;min-width:220px;}
+.borrador-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-sm);transition:box-shadow 0.15s;position:relative;}
+.borrador-card:hover{box-shadow:var(--shadow-md);}
+.borrador-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:4px;}
+.borrador-nombre{font-weight:700;font-size:14px;color:var(--navy);margin-bottom:3px;}
+.borrador-meta{font-size:12px;color:var(--gray-400);margin-bottom:8px;}
+.borrador-nota{font-size:12px;color:var(--gray-600);background:var(--gray-100);border-radius:6px;padding:7px 10px;margin-bottom:8px;white-space:pre-wrap;line-height:1.5;}
+.borrador-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+.tag-draft{background:#fef9c3;color:#854d0e;}
+.tag-priority-alta{background:#fee2e2;color:#991b1b;}
+.tag-priority-media{background:#fff3e0;color:#92400e;}
+.tag-priority-baja{background:#f0fdf4;color:#166534;}
+.confirm-btn{background:#f0fdf4;color:#16a34a;border:none;padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.confirm-btn:hover{background:#16a34a;color:white;}
 .loading-overlay{display:none;position:fixed;inset:0;background:rgba(26,39,68,0.35);z-index:500;align-items:center;justify-content:center;}
 .loading-overlay.show{display:flex;}
 .loading-box{background:var(--white);border-radius:var(--radius-lg);padding:28px 36px;box-shadow:var(--shadow-lg);text-align:center;}
@@ -144,6 +157,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
   <button class="tab-btn" onclick="switchTab('turnos')" id="tab-turnos">🛠 Turnos</button>
   <button class="tab-btn" onclick="switchTab('clientes')" id="tab-clientes">👤 Clientes</button>
   <button class="tab-btn" onclick="switchTab('mapa')" id="tab-mapa">🗺 Mapa</button>
+  <button class="tab-btn" onclick="switchTab('borrador')" id="tab-borrador">📝 Borrador</button>
 </div>
 
 <!-- AGENDA -->
@@ -227,7 +241,7 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
     <div class="legend-title">Referencias</div>
     <div class="legend-items">
       <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div> Localidad de servicio</div>
-      <div class="legend-item"><div class="legend-circle" style="border-color:#f97316;opacity:0.7"></div> Radio 30 km</div>
+      <div class="legend-item"><div class="legend-circle" style="border-color:#16a34a;opacity:0.7"></div> Radio 30 km</div>
       <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Zona restringida</div>
       <div class="legend-item"><div class="legend-circle" style="border-color:#ef4444;opacity:0.7"></div> Radio 20 km</div>
       <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;opacity:0.8"></div> Búsqueda</div>
@@ -236,6 +250,107 @@ header{background:var(--navy);padding:0 24px;display:flex;align-items:center;jus
   <div class="info-card" id="map-info-card">
     <div class="legend-title" style="margin-bottom:6px">Información de zona</div>
     <p style="font-size:13px;color:var(--gray-400)">Hacé click en un punto del mapa o usá el buscador.</p>
+  </div>
+</div>
+
+<!-- BORRADOR -->
+<div id="panel-borrador" class="panel">
+  <div class="section-header">
+    <div>
+      <div class="section-title">Borrador de Turnos</div>
+      <div class="section-sub">Anotá potenciales turnos antes de confirmarlos en la Agenda</div>
+    </div>
+    <button class="btn btn-primary" onclick="openBorradorModal()">＋ Agregar nota</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" class="search-input" id="borrador-search" placeholder="🔍 Buscar por nombre, localidad o nota..." oninput="renderBorrador()">
+    <select id="borrador-filter-loc" onchange="renderBorrador()">
+      <option value="">Todas las localidades</option>
+      <option>Córdoba Capital</option><option>Canals</option><option>Despeñaderos</option>
+      <option>Coronel Moldes</option><option>La Carlota</option><option>Villa Dolores</option>
+      <option>Tránsito</option><option>Jesús María</option><option>San Guillermo</option>
+      <option>Otra / A definir</option>
+    </select>
+    <select id="borrador-filter-pri" onchange="renderBorrador()">
+      <option value="">Todas las prioridades</option>
+      <option>Alta</option><option>Media</option><option>Baja</option>
+    </select>
+  </div>
+  <div id="borrador-grid" class="borrador-grid"></div>
+  <div id="borrador-empty" class="empty-state" style="display:none">
+    <div class="empty-icon">📝</div>
+    <div class="empty-title">Sin notas en el borrador</div>
+    <div>Usá el botón "Agregar nota" para anotar potenciales turnos</div>
+  </div>
+</div>
+
+<!-- MODAL BORRADOR -->
+<div class="modal-overlay" id="modal-borrador-overlay">
+  <div class="modal">
+    <div class="modal-title">📝 <span id="modal-borrador-title">Nueva nota de borrador</span></div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Nombre del cliente</label>
+        <input type="text" id="b-nombre" placeholder="Ej: Juan Pérez (o descripción del caso)">
+      </div>
+      <div class="form-group">
+        <label>Modelo del vehículo</label>
+        <input type="text" id="b-modelo" placeholder="Ej: Ford Focus 2020">
+      </div>
+      <div class="form-group">
+        <label>Patente</label>
+        <input type="text" id="b-patente" placeholder="AB 123 CD">
+      </div>
+      <div class="form-group">
+        <label>Localidad sugerida</label>
+        <select id="b-localidad">
+          <option value="">— A definir —</option>
+          <option>Córdoba Capital</option><option>Canals</option><option>Despeñaderos</option>
+          <option>Coronel Moldes</option><option>La Carlota</option><option>Villa Dolores</option>
+          <option>Tránsito</option><option>Jesús María</option><option>San Guillermo</option>
+          <option>Otra / A definir</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Prioridad</label>
+        <select id="b-prioridad">
+          <option value="Media">Media</option>
+          <option value="Alta">Alta</option>
+          <option value="Baja">Baja</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Servicio / Notas</label>
+        <textarea id="b-nota" rows="3" style="padding:9px 12px;border:1.5px solid var(--gray-200);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--gray-800);outline:none;resize:vertical;" placeholder="Describí el servicio, lo que mencionó el cliente, fechas posibles, etc."></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeBorradorModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveBorrador()">Guardar nota</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMAR BORRADOR -->
+<div class="modal-overlay" id="modal-confirmar-overlay">
+  <div class="modal">
+    <div class="modal-title">✅ Confirmar turno</div>
+    <p style="font-size:13px;color:var(--gray-600);margin-bottom:18px">Estás pasando esta nota al sistema de turnos. Elegí la fecha y confirmá.</p>
+    <div class="form-grid">
+      <div class="form-group full" id="confirmar-resumen"></div>
+      <div class="form-group">
+        <label>Fecha programada en Agenda</label>
+        <select id="c-fecha"><option value="">— Seleccioná fecha —</option></select>
+      </div>
+      <div class="form-group">
+        <label>Localidad</label>
+        <select id="c-localidad" disabled><option value="">— Se llena al elegir fecha —</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeConfirmarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarBorrador()">✅ Confirmar turno</button>
+    </div>
   </div>
 </div>
 
@@ -300,12 +415,15 @@ async function gasCall(action, body = null) {
 }
 
 const db = {
-  getTurnos:     ()       => gasCall('getTurnos'),
-  getAgenda:     ()       => gasCall('getAgenda'),
-  upsertTurno:   (t)      => gasCall('upsertTurno',  t),
-  deleteTurno:   (id)     => gasCall('deleteTurno',  { id }),
-  upsertAgenda:  (r)      => gasCall('upsertAgenda', r),
-  deleteAgenda:  (fk)     => gasCall('deleteAgenda', { fecha_key: fk }),
+  getTurnos:      ()   => gasCall('getTurnos'),
+  getAgenda:      ()   => gasCall('getAgenda'),
+  upsertTurno:    (t)  => gasCall('upsertTurno',  t),
+  deleteTurno:    (id) => gasCall('deleteTurno',  { id }),
+  upsertAgenda:   (r)  => gasCall('upsertAgenda', r),
+  deleteAgenda:   (fk) => gasCall('deleteAgenda', { fecha_key: fk }),
+  getBorradores:  ()   => gasCall('getBorradores'),
+  upsertBorrador: (b)  => gasCall('upsertBorrador', b),
+  deleteBorrador: (id) => gasCall('deleteBorrador', { id }),
 };
 
 // ══════════════════════════════════════════
@@ -313,7 +431,10 @@ const db = {
 // ══════════════════════════════════════════
 let turnos = [];
 let agendaDays = {};
+let borradores = [];
 let editingId = null;
+let editingBorradorId = null;
+let confirmandoBorrador = null;
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 
@@ -330,10 +451,11 @@ async function loadAll() {
   showLoading(true);
   setSyncStatus('loading', 'Cargando…');
   try {
-    const [tData, aData] = await Promise.all([db.getTurnos(), db.getAgenda()]);
+    const [tData, aData, bData] = await Promise.all([db.getTurnos(), db.getAgenda(), db.getBorradores()]);
     turnos = Array.isArray(tData) ? tData : [];
     agendaDays = {};
     (Array.isArray(aData) ? aData : []).forEach(r => { agendaDays[r.fecha_key] = r.localidad; });
+    borradores = Array.isArray(bData) ? bData : [];
     setSyncStatus('ok', 'Sincronizado');
   } catch(e) {
     setSyncStatus('error', 'Error de conexión');
@@ -351,10 +473,11 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + tab).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
-  if (tab === 'mapa'    && !window._mapInit) initMap();
-  if (tab === 'agenda'  ) renderCalendar();
-  if (tab === 'turnos'  ) { buildTurnoFilters(); renderTurnos(); }
-  if (tab === 'clientes') renderClientes();
+  if (tab === 'mapa'     && !window._mapInit) initMap();
+  if (tab === 'agenda'   ) renderCalendar();
+  if (tab === 'turnos'   ) { buildTurnoFilters(); renderTurnos(); }
+  if (tab === 'clientes' ) renderClientes();
+  if (tab === 'borrador' ) renderBorrador();
 }
 
 function dateKey(y, m, d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
@@ -682,7 +805,7 @@ function initMap(){
   _map=L.map('map').setView([-32.0,-63.9],7);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:18}).addTo(_map);
   LOCALITIES_MAP.forEach(loc=>{
-    if(!loc.noRadius)L.circle([loc.lat,loc.lng],{radius:30000,color:'#f97316',weight:1.5,dashArray:'6,5',fillColor:'#f97316',fillOpacity:0.08}).addTo(_map);
+    if(!loc.noRadius)L.circle([loc.lat,loc.lng],{radius:30000,color:'#16a34a',weight:1.5,dashArray:'6,5',fillColor:'#16a34a',fillOpacity:0.08}).addTo(_map);
     const icon=L.divIcon({className:'',html:`<div style="background:#f97316;border:3px solid white;width:14px;height:14px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3)"></div>`,iconSize:[14,14],iconAnchor:[7,7]});
     const n=turnos.filter(t=>t.localidad===loc.name).length;
     const m=L.marker([loc.lat,loc.lng],{icon}).addTo(_map);
@@ -752,17 +875,193 @@ function showSearchResults(items,el){
 }
 
 // ══════════════════════════════════════════
+// BORRADOR
+// ══════════════════════════════════════════
+function renderBorrador() {
+  const q = document.getElementById('borrador-search').value.toLowerCase();
+  const filterLoc = document.getElementById('borrador-filter-loc').value;
+  const filterPri = document.getElementById('borrador-filter-pri').value;
+  const grid = document.getElementById('borrador-grid');
+  const empty = document.getElementById('borrador-empty');
+
+  const filtered = borradores.filter(b => {
+    const matchQ = !q || [b.nombre,b.localidad,b.nota,b.modelo].some(v=>(v||'').toLowerCase().includes(q));
+    const matchL = !filterLoc || b.localidad === filterLoc;
+    const matchP = !filterPri || b.prioridad === filterPri;
+    return matchQ && matchL && matchP;
+  }).sort((a,b) => {
+    const order = {Alta:0,Media:1,Baja:2};
+    return (order[a.prioridad]||1) - (order[b.prioridad]||1);
+  });
+
+  grid.innerHTML = '';
+  empty.style.display = filtered.length === 0 ? 'block' : 'none';
+
+  filtered.forEach(b => {
+    const priClass = b.prioridad==='Alta' ? 'tag-priority-alta' : b.prioridad==='Baja' ? 'tag-priority-baja' : 'tag-priority-media';
+    const card = document.createElement('div');
+    card.className = 'borrador-card';
+    card.innerHTML = `
+      <div class="borrador-nombre">${b.nombre || '(sin nombre)'}</div>
+      <div class="borrador-meta">${[b.modelo,b.patente].filter(Boolean).join(' · ') || 'Vehículo a confirmar'}</div>
+      ${b.nota ? `<div class="borrador-nota">${b.nota}</div>` : ''}
+      <div class="borrador-footer">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          ${b.localidad ? `<span class="tag tag-locality">📍 ${b.localidad}</span>` : `<span class="tag" style="background:var(--gray-100);color:var(--gray-400)">📍 A definir</span>`}
+          <span class="tag ${priClass}">● ${b.prioridad||'Media'}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="confirm-btn" onclick="abrirConfirmar('${b.id}')">✅ Confirmar</button>
+          <button class="btn btn-sm" style="background:#eff6ff;color:#3b82f6" onclick="editBorrador('${b.id}')">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBorrador('${b.id}')">🗑</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function openBorradorModal(id) {
+  editingBorradorId = id || null;
+  const b = id ? borradores.find(x=>x.id===id) : null;
+  document.getElementById('modal-borrador-title').textContent = b ? 'Editar nota' : 'Nueva nota de borrador';
+  document.getElementById('b-nombre').value   = b?.nombre    || '';
+  document.getElementById('b-modelo').value   = b?.modelo    || '';
+  document.getElementById('b-patente').value  = b?.patente   || '';
+  document.getElementById('b-localidad').value= b?.localidad || '';
+  document.getElementById('b-prioridad').value= b?.prioridad || 'Media';
+  document.getElementById('b-nota').value     = b?.nota      || '';
+  document.getElementById('modal-borrador-overlay').classList.add('open');
+}
+function editBorrador(id) { openBorradorModal(id); }
+function closeBorradorModal() { document.getElementById('modal-borrador-overlay').classList.remove('open'); editingBorradorId=null; }
+
+async function saveBorrador() {
+  const nombre   = document.getElementById('b-nombre').value.trim();
+  const modelo   = document.getElementById('b-modelo').value.trim();
+  const patente  = document.getElementById('b-patente').value.trim();
+  const localidad= document.getElementById('b-localidad').value;
+  const prioridad= document.getElementById('b-prioridad').value;
+  const nota     = document.getElementById('b-nota').value.trim();
+
+  if (!nombre && !nota) { alert('Completá al menos el nombre o una nota.'); return; }
+
+  const record = {
+    id: editingBorradorId || Date.now().toString(),
+    nombre, modelo, patente, localidad, prioridad, nota,
+    creadoEn: editingBorradorId ? (borradores.find(b=>b.id===editingBorradorId)?.creadoEn || new Date().toISOString().substring(0,10)) : new Date().toISOString().substring(0,10)
+  };
+
+  setSyncStatus('loading','Guardando…');
+  try {
+    await db.upsertBorrador(record);
+    if (editingBorradorId) {
+      const idx = borradores.findIndex(b=>b.id===editingBorradorId);
+      if (idx!==-1) borradores[idx] = record;
+    } else {
+      borradores.push(record);
+    }
+    setSyncStatus('ok','Sincronizado');
+    closeBorradorModal();
+    renderBorrador();
+  } catch(e) {
+    setSyncStatus('error','Error al guardar');
+    alert('Error: ' + e.message);
+  }
+}
+
+async function deleteBorrador(id) {
+  if (!confirm('¿Eliminás esta nota del borrador?')) return;
+  setSyncStatus('loading','Eliminando…');
+  try {
+    await db.deleteBorrador(id);
+    borradores = borradores.filter(b=>b.id!==id);
+    setSyncStatus('ok','Sincronizado');
+    renderBorrador();
+  } catch(e) { setSyncStatus('error','Error al eliminar'); }
+}
+
+function abrirConfirmar(id) {
+  confirmandoBorrador = borradores.find(b=>b.id===id);
+  if (!confirmandoBorrador) return;
+  const b = confirmandoBorrador;
+  document.getElementById('confirmar-resumen').innerHTML = `
+    <div style="background:var(--gray-100);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--gray-800)">
+      <strong>${b.nombre||'(sin nombre)'}</strong>${b.modelo?' · '+b.modelo:''}<br>
+      ${b.patente?'Patente: '+b.patente+'<br>':''}
+      ${b.nota?'<span style="color:var(--gray-600)">'+b.nota+'</span>':''}
+    </div>`;
+  buildConfirmarFechaOptions(b.localidad);
+  document.getElementById('modal-confirmar-overlay').classList.add('open');
+}
+
+function buildConfirmarFechaOptions(localidadSugerida) {
+  const scheduled = getScheduledDates();
+  const fechaSel = document.getElementById('c-fecha');
+  const locSel   = document.getElementById('c-localidad');
+  fechaSel.innerHTML = '<option value="">— Seleccioná fecha programada —</option>';
+  scheduled.forEach(([k,v]) => {
+    const opt=document.createElement('option');
+    opt.value=k; opt.textContent=`${fmtDate(k)} — ${v}`;
+    // Pre-seleccionar si coincide con localidad sugerida
+    if (localidadSugerida && v===localidadSugerida) opt.selected=true;
+    fechaSel.appendChild(opt);
+  });
+  const syncLoc = () => {
+    const loc=agendaDays[fechaSel.value]||'';
+    locSel.innerHTML=loc?`<option value="${loc}">${loc}</option>`:`<option value="">— Elegí una fecha primero —</option>`;
+    locSel.disabled=!loc;
+  };
+  fechaSel.onchange=syncLoc; syncLoc();
+}
+
+function closeConfirmarModal() { document.getElementById('modal-confirmar-overlay').classList.remove('open'); confirmandoBorrador=null; }
+
+async function confirmarBorrador() {
+  const b = confirmandoBorrador;
+  if (!b) return;
+  const fecha    = document.getElementById('c-fecha').value;
+  const localidad= document.getElementById('c-localidad').value;
+  if (!fecha||!localidad) { alert('Seleccioná una fecha de la Agenda.'); return; }
+  if (!b.nombre||!b.modelo||!b.patente) { alert('Para confirmar el turno el borrador necesita nombre, modelo y patente. Editalo primero.'); return; }
+
+  const turno = {
+    id: Date.now().toString(),
+    nombre: b.nombre, modelo: b.modelo, patente: b.patente,
+    vin: b.vin||'', servicio: b.nota||'', fecha, localidad
+  };
+
+  setSyncStatus('loading','Confirmando…');
+  try {
+    await db.upsertTurno(turno);
+    turnos.push(turno);
+    // Eliminar del borrador
+    await db.deleteBorrador(b.id);
+    borradores = borradores.filter(x=>x.id!==b.id);
+    setSyncStatus('ok','Sincronizado');
+    closeConfirmarModal();
+    renderBorrador();
+    renderCalendar();
+    alert('✅ Turno confirmado y movido a la agenda.');
+  } catch(e) {
+    setSyncStatus('error','Error');
+    alert('Error: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════
 // AUTO-REFRESH + EVENTOS + ARRANQUE
 // ══════════════════════════════════════════
 async function refreshData(){
   try{
-    const [tData,aData]=await Promise.all([db.getTurnos(),db.getAgenda()]);
+    const [tData,aData,bData]=await Promise.all([db.getTurnos(),db.getAgenda(),db.getBorradores()]);
     turnos=Array.isArray(tData)?tData:[];agendaDays={};
     (Array.isArray(aData)?aData:[]).forEach(r=>{agendaDays[r.fecha_key]=r.localidad;});
+    borradores=Array.isArray(bData)?bData:[];
     const ap=document.querySelector('.panel.active')?.id;
     if(ap==='panel-agenda')renderCalendar();
     if(ap==='panel-turnos'){buildTurnoFilters();renderTurnos();}
     if(ap==='panel-clientes')renderClientes();
+    if(ap==='panel-borrador')renderBorrador();
     setSyncStatus('ok','Sincronizado');
   }catch(e){setSyncStatus('error','Sin conexión');}
 }
@@ -774,6 +1073,8 @@ document.addEventListener('click',e=>{
 });
 document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.getElementById('client-detail-overlay').addEventListener('click',function(e){if(e.target===this)closeClientDetail();});
+document.getElementById('modal-borrador-overlay').addEventListener('click',function(e){if(e.target===this)closeBorradorModal();});
+document.getElementById('modal-confirmar-overlay').addEventListener('click',function(e){if(e.target===this)closeConfirmarModal();});
 
 (async()=>{
   await loadAll();
